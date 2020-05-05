@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Sales";
+    Layout = null;
+}
+
+@model FastReport.Web.WebReport
+
+
+<div id="reportparaterets" class="col col-md-2">
+    <div id="selectedvalid">
+        <form id="incform">
+            <div class="e-label" for="da1">Дата начало</div>
+            <input class="form-control" type="date" id="da1" name="da1" value="@ViewBag.da1" />
+
+            <div class="e-label" for="da2">Дата окончание</div>
+            <input class="form-control" type="date" id="da2" name="da2" value="@ViewBag.da2" />
+
+            <button type="button" onclick="GetDataAjax('/AllReports/Sales', '#incform');" class="btn btn-primary">Искать</button>
+        </form>
+    </div>
+</div>
+<div id="renderingreport" class="webreport col-md-8">
+    @(await Model.Render())
+</div>

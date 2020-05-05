@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/10/2020 14:08:51" ReportInfo.Modified="04/22/2020 01:02:14" ReportInfo.CreatorVersion="2020.1.0.0">
+  <Styles Name="Blue">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="LightSkyBlue" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="LightSkyBlue" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="AliceBlue" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqtJlkhWcBSbrTGERogY6EjDVYyyUweqoIemTw0GrJwpgp+R+zixuJJuny+q7SebDLoJ3LWodPvlW/F5vAve2weq5mFmt1Zm0lF/FuoMnxjj6tPbPApGhmQ0FPO2L9+kTmtN+8JwsLmtkeErd8rkW4zw==">
+      <TableDataSource Name="Table" Alias="Sales" DataType="System.Int32" Enabled="true" SelectCommand="SELECT [Id]&#13;&#10;      ,[Name]&#13;&#10;      ,[Amount]&#13;&#10;      ,[SaleCost]&#13;&#10;	  ,([Amount]*[SaleCost]) as TotalSaleCost&#13;&#10;      ,[Client]&#13;&#10;      ,[OptCost]&#13;&#10;      ,[RegDt]&#13;&#10;      ,[OrderNumber]&#13;&#10;      ,[Comments]&#13;&#10;  FROM [HistorySaleView]&#13;&#10;  where RegDt between @da1 and @da2&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="Id" DataType="System.Int32"/>
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="SaleCost" DataType="System.Double"/>
+        <Column Name="OptCost" DataType="System.Double"/>
+        <Column Name="RegDt" DataType="System.DateTime"/>
+        <Column Name="Amount" DataType="System.Double"/>
+        <Column Name="TotalSaleCost" DataType="System.Double"/>
+        <Column Name="Client" DataType="System.String"/>
+        <Column Name="OrderNumber" DataType="System.Int32"/>
+        <Column Name="Comments" DataType="System.String"/>
+        <CommandParameter Name="da1" DataType="4" Size="20" Expression="[da1]" DefaultValue="01.04.2018"/>
+        <CommandParameter Name="da2" DataType="4" Size="20" Expression="[da2]" DefaultValue="20.04.2019"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="Return" DataType="System.Int32" Enabled="true" SelectCommand="SELECT [Id]&#13;&#10;      ,[Name]&#13;&#10;      ,[ReturnCost]&#13;&#10;      ,[Amount]&#13;&#10;      ,[RegDt]&#13;&#10;      ,[CustomerName]&#13;&#10;  FROM [ReturnView]&#13;&#10;  where RegDt between @da3 and @da4">
+        <Column Name="Id" DataType="System.Int32"/>
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="ReturnCost" DataType="System.Double"/>
+        <Column Name="RegDt" DataType="System.DateTime"/>
+        <Column Name="CustomerName" DataType="System.String"/>
+        <Column Name="TotalReturnCost" DataType="System.Double" PropName="Column" Calculated="true" Expression="[Return.Amount]*[Return.ReturnCost]"/>
+        <Column Name="Amount" DataType="System.Double"/>
+        <CommandParameter Name="da3" DataType="4" Size="20" Expression="[da1]" DefaultValue="01.04.2020"/>
+        <CommandParameter Name="da4" DataType="4" Size="20" Expression="[da2]" DefaultValue="21.04.2020"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="da1" DataType="System.DateTime"/>
+    <Parameter Name="da2" DataType="System.DateTime"/>
+    <Total Name="TotalSale" Expression="[Sales.TotalSaleCost]" Evaluator="Data1" PrintOn="DataFooter1"/>
+    <Total Name="TotalReturn" Expression="[Return.TotalReturnCost]" Evaluator="Data2" PrintOn="DataFooter2"/>
+    <Total Name="Total" TotalType="Max" Expression="[TotalSale]-[TotalReturn]" Evaluator="Data1" PrintOn="ReportSummary1" ResetOnReprint="true"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Продажа товара от [da1] до [da2]" HorzAlign="Center" VertAlign="Center" Font="Arial, 11pt, style=Bold"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="90.76" Width="718.2" Height="18.9" EvenStyle="EvenRows" DataSource="Table">
+      <TextObject Name="Text2" Left="56.7" Width="103.95" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.Name]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text6" Left="160.65" Width="85.05" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.Client]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text8" Left="245.7" Width="75.6" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.Amount]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text10" Left="321.3" Width="66.15" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.SaleCost]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text12" Left="453.6" Width="66.15" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.OptCost]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text14" Left="519.75" Width="85.05" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.RegDt]" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text20" Left="9.45" Width="47.25" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.OrderNumber]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text16" Left="387.45" Width="66.15" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.TotalSaleCost]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text22" Left="604.8" Width="103.95" Height="18.9" CanGrow="true" CanBreak="false" Text="[Sales.Comments]" Format="Date" Format.Format="d" VertAlign="Center" Font="Arial, 7pt"/>
+      <DataHeaderBand Name="DataHeader1" Top="40.66" Width="718.2" Height="47.25">
+        <TextObject Name="Text19" Top="18.9" Width="56.7" Height="28.35" Fill.Color="LightSkyBlue" Text="Номер заказа" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text3" Left="56.7" Top="18.9" Width="103.95" Height="28.35" Fill.Color="LightSkyBlue" Text="Продукт" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text7" Left="160.65" Top="18.9" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Клиент" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text9" Left="245.7" Top="18.9" Width="75.6" Height="28.35" Fill.Color="LightSkyBlue" Text="Количество" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text11" Left="321.3" Top="18.9" Width="66.15" Height="28.35" Fill.Color="LightSkyBlue" Text="Цена продажы" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text17" Left="387.45" Top="18.9" Width="66.15" Height="28.35" Fill.Color="LightSkyBlue" Text="Сумма" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text13" Left="453.6" Top="18.9" Width="66.15" Height="28.35" Fill.Color="LightSkyBlue" Text="Оптовая?" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text15" Left="519.75" Top="18.9" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Дата рег-ции" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text21" Left="604.8" Top="18.9" Width="113.4" Height="28.35" Fill.Color="LightSkyBlue" Text="Коментария" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text23" Left="9.45" Width="47.25" Height="18.9" Text="Продажа" VertAlign="Center" Font="Arial, 7pt"/>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter1" Top="112.52" Width="718.2" Height="28.35">
+        <TextObject Name="Text25" Left="321.3" Width="66.15" Height="18.9" CanGrow="true" CanBreak="false" Text="Итого:" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text5" Left="387.45" Width="132.3" Height="18.9" Text="[ToSingle([TotalSale])]  тг." VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      </DataFooterBand>
+    </DataBand>
+    <DataBand Name="Data2" Top="193.84" Width="718.2" Height="18.9" DataSource="Table1">
+      <TextObject Name="Text30" Left="9.45" Width="151.2" Height="18.9" CanGrow="true" Text="[Return.Name]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text31" Left="160.65" Width="85.05" Height="18.9" CanGrow="true" CanBreak="false" Text="[Return.Amount]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text32" Left="245.7" Width="85.05" Height="18.9" CanGrow="true" CanBreak="false" Text="[Return.ReturnCost]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text33" Left="330.75" Width="94.5" Height="18.9" CanGrow="true" CanBreak="false" Text="[Return.TotalReturnCost]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text35" Left="425.25" Width="94.5" Height="18.9" CanGrow="true" CanBreak="false" Text="[Return.CustomerName]" VertAlign="Center" Font="Arial, 7pt"/>
+      <TextObject Name="Text37" Left="519.75" Width="122.85" Height="18.9" CanGrow="true" Text="[Return.RegDt]" VertAlign="Center" Font="Arial, 7pt"/>
+      <DataHeaderBand Name="DataHeader2" Top="143.73" Width="718.2" Height="47.25">
+        <TextObject Name="Text4" Left="9.45" Width="47.25" Height="18.9" Text="Возврат" VertAlign="Center" Font="Arial, 7pt"/>
+        <TextObject Name="Text26" Top="18.9" Width="160.65" Height="28.35" Fill.Color="LightSkyBlue" Text="Продукт возврата" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text27" Left="160.65" Top="18.9" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Количество" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text28" Left="245.7" Top="18.9" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Цена возврата шт." VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text29" Left="330.75" Top="18.9" Width="94.5" Height="28.35" Fill.Color="LightSkyBlue" Text="Сумма возврата" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text34" Left="425.25" Top="18.9" Width="94.5" Height="28.35" Fill.Color="LightSkyBlue" Text="Клиент" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        <TextObject Name="Text36" Left="519.75" Top="18.9" Width="122.85" Height="28.35" Fill.Color="LightSkyBlue" Text="Дата рег-ции" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter2" Top="215.59" Width="718.2" Height="18.9">
+        <TextObject Name="Text38" Left="321.3" Width="66.15" Height="18.9" CanGrow="true" CanBreak="false" Text="Итого:" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+        <TextObject Name="Text24" Left="387.45" Width="132.3" Height="18.9" Text="[ToSingle([TotalReturn])]  тг." Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" VertAlign="Center" Font="Arial, 7pt, style=Bold"/>
+      </DataFooterBand>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="237.35" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="259.11" Width="718.2" Height="18.9">
+      <TextObject Name="Text18" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="LightSkyBlue" Text="[PageN]" HorzAlign="Right" VertAlign="Center" Font="Arial, 8pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

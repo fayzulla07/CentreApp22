@@ -1,0 +1,421 @@
+﻿
+
+@{
+    ViewData["Title"] = "Проданные продукты";
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { AllowFiltering = true, PopupHeight = "200px", Placeholder = "Выберите", ShowClearButton = true };
+    var Modalanimation = new Syncfusion.EJ2.Popups.DialogAnimationSettings { Effect = Syncfusion.EJ2.Popups.DialogEffect.Zoom };
+    Customers cust = new Customers();
+}
+@model ProductSales
+
+@section In_hkwrapper{
+    <div id='container123'>
+        <ejs-dialog id='dialog' beforeOpen="OnBeforeOpenDialog" allowDragging="true" animationSettings="Modalanimation" header="Предупреждение" showCloseIcon="true" isModal="true" target="#container123" minHeight="200px" width="300px">
+            <e-content-template>
+                <div class="e-label">Следующие товары уже не остались!</div>
+                <div id="dialogcontent111" class="e-label text-danger"></div>
+            </e-content-template>
+
+        </ejs-dialog>
+    </div>
+    <div id='container1932'>
+        <ejs-dialog id='dialog2' beforeOpen="OnBeforeOpenDialog2" allowDragging="true" header="Закрытия" showCloseIcon="true" isModal="true" target="#container1932" minHeight="100px" width="250px">
+            <e-content-template>
+                <div>Вы действительно хотите закрыть продажу на курс</div>
+                <div id="dialogkurs" class="text-danger h4">  </div>
+            </e-content-template>
+            <e-dialog-buttons>
+                <e-dialog-dialogbutton click="addclickYES" buttonModel="@(new { content = "Да", isPrimary = true })"></e-dialog-dialogbutton>
+            </e-dialog-buttons>
+        </ejs-dialog>
+    </div>
+
+    <div id='containerCustomer'>
+        <ejs-dialog id='dialogcus'beforeOpen="OnBeforeOpenDialogCus" allowDragging="true" animationSettings="Modalanimation" isModal="true" header="Клиент" showCloseIcon="true" target="#containerCustomer" minHeight="200px" width="500px">
+            <e-content-template>
+                <form id="form_Element" class="custom-form">
+                    <div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="e-float-input e-control-wrapper">
+                                    <input id="CusName" name="CusName" type='text' />
+                                    <label for="CusName" class="e-float-text e-label-top">Имя</label>
+                                    <span class="text-danger" id="namespan"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="e-float-input e-control-wrapper">
+                                    <input id="Address" name="Address" type='text' />
+                                    <label for="Address" class="e-float-text e-label-top">Адрес</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="e-float-input e-control-wrapper">
+                                    <input id="Email" name="Email" type='text' />
+                                    <label for="Email" class="e-float-text e-label-top">Почта</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="e-float-input e-control-wrapper">
+                                    <input id="PhoneNumber" name="PhoneNumber" type='text' />
+                                    <label for="PhoneNumber" class="e-float-text e-label-top">Тел номер</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <ejs-dropdownlist id="CustomerTypeId" showClearButton="true" allowFiltering="true" placeholder="Выберите тип" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/CustomerType/ForDropDown", Adaptor = "UrlAdaptor"})">
+                                    <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+                                </ejs-dropdownlist>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </e-content-template>
+            <e-dialog-buttons>
+                <e-dialog-dialogbutton click="addclick" buttonModel="@(new { content = "Добавить", isPrimary = true })"></e-dialog-dialogbutton>
+            </e-dialog-buttons>
+        </ejs-dialog>
+    </div>
+}
+
+<div class="h3" style="margin:40px 40px 20px 40px">Продажа продукта</div>
+<div class="row m-4">
+    <div class="col col-md-4">
+        <ejs-dropdownlist id="ProductId222" select="SelectedProduct" floatLabelType="Auto" showClearButton="true" ejs-for="ProductId" allowFiltering="true"  placeholder="Выберите продукт по имени" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDown", Adaptor = "UrlAdaptor"})">
+            <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+        </ejs-dropdownlist>
+    </div>
+    <div class="col col-md-3">
+        <ejs-textbox id="ProductCode" placeholder="Напишите штрих код сюда" showClearButton="true" floatLabelType="Auto"></ejs-textbox>
+    </div>
+    <div class="col col-md-2">
+        <ejs-dropdownlist floatLabelType="Auto" id="CustomerId" showClearButton="true" ejs-for="CustomerId" allowFiltering="true" placeholder="Выберите покупателя" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Customer/ForDropDown", Adaptor = "UrlAdaptor"})">
+            <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+        </ejs-dropdownlist>
+    </div>
+    <div class="col col-md-3 row">
+        <div class="col col-md-6">
+            <button class="btn btn-info" id="addcustomer" onclick="dialogcus.show();">Добавить</button>
+        </div>
+        <div class="col col-md-6">
+            <ejs-numerictextbox change="numericboxchange" min="1" id="Kurs" placeholder="Курс $" showClearButton="true" floatLabelType="Auto" value="1"></ejs-numerictextbox>
+        </div>
+    </div>
+    
+</div>
+
+<div class="control-wrapper m-1">
+    <ejs-grid id="Grid" locale="ru-RU" allowPaging="true" actionBegin="OnActionBegin" actionComplete="OnActionComplate" gridLines="Both" allowResizing="true" height="350" toolbar="@(new List<string>() {"Edit", "Delete", "Cancel", "Update" })">
+        <e-grid-editSettings mode="Normal" newRowPosition="Top" allowAdding="true" allowDeleting="true" allowEditing="true"></e-grid-editSettings>
+        <e-grid-columns>
+            <e-grid-column field="ProductId" visible="false" isPrimaryKey="true" type="number" ></e-grid-column>
+            <e-grid-column field="ProductName" allowEditing="false" headerText="Продукт" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+            <e-grid-column field="Amount" type="number" width="80px" headerText="Кол." minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" textAlign="Center"></e-grid-column>
+
+            <e-grid-column field="Volume" allowEditing="false" type="number" width="130px" headerText="Кол.за ед-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+            <e-grid-column field="VolumeTotal" allowEditing="false" type="number" width="130px" headerText="Кол.общ-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+
+            <e-grid-column field="MySaleCost" type="number" width="120px" validationRules="@(new { required=true})" minWidth="50" headerText="Цена за ед($)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="SaleCostTG" allowEditing="false" type="number" width="130px" validationRules="@(new { number=true})" minWidth="50" headerText="Цена за.ед ТГ" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="IsOptCost" type="boolean" editType="booleanedit" displayAsCheckBox="true" width="100px" minWidth="50" te headerText="Оптовая?" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="RemainCount" allowEditing="false" width="220px" minWidth="50" headerText="Остаток" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="Comments" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+    <div class="container-fluid row mt-2">
+        <div class="col col-md-1">
+            <button id="btncloseorder" onclick="Closeorder()" class="btn btn-primary">Закрыть</button>
+        </div>
+        <div class="col col-md-2">
+                <ejs-checkbox id="isbankcheked" change="isbankchecked" label="через банк" cssClass="col"></ejs-checkbox>
+        </div>
+        <div class="col col-md-9">
+            <div class="h1 text-center">Общая сумма: <span style="color:blue;" id="totalval">0.0 </span>тг</div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="~/Views/Partials/NotifyView.cshtml" />
+    <script>
+        var closeDialog = true;
+        var closeDialog2 = true;
+        var closeDialogCustomer = true;
+        var grid;
+        var dialog;
+        var dialogcus;
+        var IsBank = false;
+        window.addEventListener("load", function () {
+            dialog = document.getElementById("dialog").ej2_instances[0];
+            dialog2 = document.getElementById("dialog2").ej2_instances[0];
+            grid = document.getElementById("Grid").ej2_instances[0];
+            dialogcus = document.getElementById("dialogcus").ej2_instances[0];
+
+        });
+        function addclickYES() {
+            dialog2.hide();
+            var kurss = document.getElementById("Kurs").ej2_instances[0].value;
+            document.querySelector("#ProductCode").ej2_instances[0].focusIn();
+            if (grid.dataSource.length <= 0) {
+                toastObj.show({ title: 'Пустая дата!', content: 'Пусто', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                return;
+            }
+            var arr = new Array();
+            var dsource = grid.dataSource;
+            var customer = parseInt(document.querySelector("#CustomerId").ej2_instances[0].value);
+            for (var i = 0; i < dsource.length; i++) {
+                arr[i] = { "Id": dsource[i].ProductId, "SaleCost": dsource[i].MySaleCost, "Amount": dsource[i].Amount, "IsOptCost": dsource[i].IsOptCost, "CustomerId": customer, "Comments": dsource[i].Comments, "IsBank": IsBank, "Kurs": kurss }
+            }
+            var dataaa = JSON.stringify(arr)
+            $.ajax({
+                type: "POST",
+                url: "/ProductSales/Insert",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: dataaa,
+                success: function (data) {
+                    if (Array.isArray(data)) {
+                        document.getElementById('dialogcontent111').innerHTML = "";
+                        for (var i = 0; i < grid.dataSource.length; i++) {
+                            var hasvalue = false;
+                            for (var j = 0; j < data.length; j++) {
+                                if (grid.dataSource[i].ProductId == data[j].Id) {
+                                    document.getElementById('dialogcontent111').innerHTML += data[j].Name + "<br />";
+                                    hasvalue = true;
+                                }
+                            }
+                            if (hasvalue == true) {
+                                dialog.show();
+                            }
+                        }
+                        grid.dataSource = new Array();
+                        toastObj.show({ title: 'Ошибка!', content: 'Продукты были куплены!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                    }
+                    toastObj.show({ title: 'Успех!', content: data, cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                    grid.dataSource = new Array();
+
+                    SetTotalValue();
+                },
+                error: function (request, error) {
+                    toastObj.show({ title: 'Ошибка!', content: 'Произошло ошибка с соединениями проверьте интернет', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                }
+            });
+        }
+        function addclick(args) {
+            var namevalid = document.getElementById('CusName');
+            if (namevalid.value == "" || namevalid.value == null) {
+                document.getElementById('namespan').innerHTML = "Это поле обязательно!"
+            }
+            else {
+                document.getElementById('namespan').innerHTML = "";
+
+                var CusName = document.getElementById('CusName').value;
+                var Address = document.getElementById('Address').value;
+                var Email = document.getElementById('Email').value;
+                var PhoneNumber = document.getElementById('PhoneNumber').value;
+                var CustomerTypeId = parseInt(document.getElementById('CustomerTypeId').ej2_instances[0].value);
+               
+                var dataa = { "Name": CusName, Address, Email, PhoneNumber, CustomerTypeId }
+                $.ajax({
+                    type: "POST",
+                    url: "/Customer/InsertCustom",
+                    data: dataa,
+                    success: function (data) {
+                        dialogcus.hide();
+                        document.getElementById('CusName').value = null;
+                        document.getElementById('Address').value = null;
+                        document.getElementById('Email').value = null;
+                        document.getElementById('PhoneNumber').value = null;
+                        document.getElementById('CustomerTypeId').ej2_instances[0].value = null;
+                        toastObj.show({ title: 'Успех!', content: "Успешно добавлено!", cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                    },
+                    error: function (request, error) {
+                        toastObj.show({ title: 'Ошибка!', content: 'Сеть логает!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                    }
+                });
+            }
+        }
+        function numericboxchange() {
+            var kurss = document.getElementById("Kurs").ej2_instances[0].value;
+            if (grid.dataSource != null) {
+                for (var i = 0; i < grid.dataSource.length; i++) {
+                    grid.dataSource[i].SaleCostTG = kurss * grid.dataSource[i].MySaleCost;
+                    grid.updateRow(i, grid.dataSource[i]);
+                }
+            }
+            grid.refresh();
+            SetTotalValue();
+        }
+
+        function OnBeforeOpenDialog(args) {
+            if (closeDialog) {
+                args.cancel = true;
+                closeDialog = false;
+            }
+        }
+        function OnBeforeOpenDialogCus(args) {
+            if (closeDialogCustomer) {
+                args.cancel = true;
+                closeDialogCustomer = false;
+            }
+        }
+        function OnBeforeOpenDialog2(args) {
+            if (closeDialog2) {
+                args.cancel = true;
+                closeDialog2 = false;
+            }
+        }
+        function SetTotalValue() {
+            var totaltenge = 0.0;
+           
+            if (grid.dataSource != null) {
+                for (var i = 0; i < grid.dataSource.length; i++) {
+                    totaltenge += grid.dataSource[i].VolumeTotal * grid.dataSource[i].SaleCostTG;
+                }
+            }
+
+            document.getElementById('totalval').innerHTML = (totaltenge).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        function isbankchecked(args){
+            IsBank = args.checked;
+        }
+
+        var toastObj;
+        setTimeout(
+            () => {
+
+            }, 800);
+        function creatednotify() {
+            toastObj = this;
+        }
+        function Closeorder() {
+            var getval = document.getElementById("Kurs").ej2_instances[0].value
+            document.getElementById('dialogkurs').innerHTML = getval;
+            document.getElementById('dialogkurs').innerHTML += "$";
+            dialog2.show();
+
+        }
+        function OnActionComplate() {
+            SetTotalValue();
+        }
+
+        function OnActionBegin(args) {
+            if (args.requestType == "save" && args.action != "add") {
+                var kurss = document.getElementById("Kurs").ej2_instances[0].value;
+
+                args.data.SaleCostTG = kurss * args.data.MySaleCost;
+                args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+
+                if (args.data.VolumeTotal > args.data.RemainFloat) {
+                    toastObj.show({ title: 'Предупреждение!', content: 'Количество не может быть больше остатка', cssClass: 'e-toast-warning', icon: 'e-warning toast-icons' });
+                    args.data.Amount = args.previousData.Amount;
+                    args.data.VolumeTotal = args.previousData.VolumeTotal;
+                    grid.updateRow(args.rowIndex, args.data);
+                   
+                    return;
+                }
+                if (args.previousData.IsOptCost != args.data.IsOptCost) {
+                    if (args.data.IsOptCost == true) {
+                        args.data.MySaleCost = args.data.OptCost;
+                    }
+                    else {
+                        args.data.MySaleCost = args.data.SaleCost;
+                    }
+                }
+               
+                grid.updateRow(args.rowIndex, args.data);
+                
+                SetTotalValue();
+            }
+        }
+
+
+
+        document.getElementById('ProductCode').addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                GetProduct(document.getElementById("ProductCode").ej2_instances[0].value);
+
+            }
+        });
+        function GetProduct(value) {
+            var entryval = document.getElementById("ProductCode").ej2_instances[0].value;
+            var kurss = document.getElementById("Kurs").ej2_instances[0].value;
+            if (typeof value != "number")
+                var queryquery = { "ProductCode": value };
+            else
+                var queryquery = { "ProductCode": value, "PrId": value };
+            $.ajax({
+                type: "POST",
+                url: "/ProductSales/Get",
+                data: queryquery,
+                success: function (data) {
+                    var flag = false;
+                    if (typeof data != "string") {
+                        toastObj.show({ title: 'Успех!', content: 'Продукт получен!', cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                        if (grid.dataSource != null)
+                            for (var i = 0; i < grid.dataSource.length; i++) {
+                                var dsource = grid.dataSource[i];
+                                if (dsource.ProductId == data.ProductId) {
+                                    dsource.Amount += data.Amount;
+                                    dsource.Volume = data.Amount;
+                                    dsource.VolumeTotal = dsource.Amount * data.Volume;
+                                    grid.updateRow(i, dsource);
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        if (flag == false) {
+                            data.SaleCostTG = kurss * data.SaleCost;
+                            grid.addRecord(data);
+                        }
+                        document.getElementById("ProductCode").ej2_instances[0].value = null;
+                        SetTotalValue();
+                    }
+                    else {
+                        toastObj.show({ title: 'Информация!', content: data, cssClass: 'e-toast-info', icon: 'e-info toast-icons' });
+                    }
+                    document.getElementById("ProductCode").ej2_instances[0].value = null;
+                },
+                error: function (request, error) {
+                    document.getElementById("ProductCode").ej2_instances[0].value = null;
+                    toastObj.show({ title: 'Ошибка!', content: 'Произошло ошибка проверьте интернет!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                }
+            });
+
+        }
+        function SelectedProduct(args) {
+            GetProduct(args.itemData.Id);
+            document.querySelector("#ProductId222").ej2_instances[0].value = null;
+        }
+        document.addEventListener("keypress", function (e) {
+            if (e.target.tagName !== "INPUT") {
+                var input = document.querySelector("#ProductCode");
+                input.focus();
+                input.value = e.key;
+                e.preventDefault();
+            }
+        });
+    </script>
+
+
+    <style>
+
+        .orientationcss .e-headercelldiv {
+            position: relative;
+            color: black;
+            font-size: 16px;
+        }
+    </style>
+
+
+}
+

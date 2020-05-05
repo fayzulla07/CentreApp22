@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Тип продукта";
+
+}
+
+<div class="h3" style="margin:40px 40px 20px 40px">Тип продукта</div>
+
+<div class="control-section m-1">
+    <div class="control-wrapper">
+        <ejs-grid id="Grid"  locale="ru-RU" allowResizing="true" actionComplete="actioncomp" actionFailure="actionfail" allowSorting="true" row height="500" allowPaging="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update", "Search" })">
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal" showDeleteConfirmDialog="true"></e-grid-editSettings>
+            <e-grid-pageSettings pageCount="7" pageSize="50"></e-grid-pageSettings>
+
+            <e-data-manager url="/ProductType/Setting" insertUrl="/ProductType/Insert" updateUrl="/ProductType/Update" removeUrl="/ProductType/Delete" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-columns>
+                <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
+                <e-grid-column field="Name" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" headerText="Имя типа"></e-grid-column>
+                <e-grid-column field="Description" minWidth="50" headerText="Описание" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+    <partial name="~/Views/Partials/NotifyView.cshtml" />
+    <script type="text/javascript">
+        var toastObj;
+        var toasts = [
+            { title: 'Предупреждение!', content: 'There was a problem with your network connection.', cssClass: 'e-toast-warning', icon: 'e-warning toast-icons' },
+            { title: 'Успех!', content: 'Успешно Сохранено!', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+            { title: 'Ошибка!', content: 'Произошло ошибка со стороны сервера', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
+            { title: 'Информация!', content: 'Please read the comments carefully.', cssClass: 'e-toast-info', icon: 'e-info toast-icons' }];
+
+        setTimeout(
+            () => {
+
+            }, 800);
+        function creatednotify() {
+            toastObj = this;
+        }
+        function actioncomp(args) {
+            if (args.requestType == "save")
+                toastObj.show(toasts[1]);
+        }
+        function actionfail(args) {
+                toastObj.show(toasts[2]);
+        }
+
+
+    </script>
+    <style>
+        .orientationcss .e-headercelldiv {
+            position: relative;
+            color: black;
+            font-size: 16px;
+        }
+    </style>
+
+}
+

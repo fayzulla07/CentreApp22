@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "Пароли и логины";
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { PopupHeight = "200px", Placeholder = "Выберите", ShowClearButton = true };
+
+}
+
+<div class="h3" style="margin:40px 40px 20px 40px">Пароли и логины</div>
+
+<div class="control-section m-1">
+    <div class="control-wrapper">
+        <ejs-grid id="Grid" locale="ru-RU" queryCellInfo="queryCellInfo" allowResizing="true" allowSorting="true" height="500" allowPaging="true" allowFiltering="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update"})">
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal" showDeleteConfirmDialog="true"></e-grid-editSettings>
+            <e-grid-pageSettings pageCount="7" pageSize="50"></e-grid-pageSettings>
+
+            <e-data-manager url="/Users/Setting" insertUrl="/Users/Insert" updateUrl="/Users/Update" removeUrl="/Users/Delete" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-columns>
+                <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
+                <e-grid-column field="Name" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" headerText="ФИО"></e-grid-column>
+                <e-grid-column field="Description" minWidth="50" headerText="Описание" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="LoginName" validationRules="@(new { required=true})" minWidth="50" headerText="Логин" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="Password" edit="@(new {create = "create", destroy = "destroy", write = "write"})" validationRules="@(new { required=true})" minWidth="50" headerText="Пароль" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="RoleId" defaultValue="null" validationRules="@(new { required=true})" headerText="Роль" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Users/GetRole", Adaptor = "UrlAdaptor"})"
+                               foreignKeyField="Id" foreignKeyValue="Name" edit="new {@params = DropDownList} " editType="dropdownedit" minWidth="50"
+                               customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"> </e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var elem;
+        var dObj;
+        function create(args) {
+            elem = document.createElement('input');
+            return elem;
+        }
+        function write(args) {
+            dObj = new ej.inputs.TextBox({
+                value: args.rowData[args.column.field],
+            });
+            dObj.type = 'password';
+            dObj.appendTo(elem);
+        }
+
+        function destroy() {
+            dObj.destroy();
+        }
+        
+        function queryCellInfo(args) {
+            if (args.column.field == "Password") {
+                args.cell.innerText = "";
+                for (var i = 0; i < args.data.Password.length; i++) {
+                    args.cell.innerText += "*";
+                }
+                
+            }
+          
+        }
+    </script>
+    <style>
+        .orientationcss .e-headercelldiv {
+            position: relative;
+            color: black;
+            font-size: 16px;
+        }
+    </style>
+
+}
+

@@ -1,0 +1,304 @@
+﻿
+
+@{
+    ViewData["Title"] = "Приход";
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { AllowFiltering = true, PopupHeight = "200px", Placeholder = "Выберите", ShowClearButton = false, FloatLabelType = Syncfusion.EJ2.Inputs.FloatLabelType.Always };
+
+}
+@model ProductIncoms
+
+
+<div class="h3" style="margin:40px 40px 20px 40px">Приход продукта</div>
+<div class="container-fluid">
+
+    <div class="row m-4">
+        <div class="col-12 col-md-4 mt-3 col-sm-12 col-">
+            <ejs-dropdownlist id="ProductId" select="SelectedProduct" showClearButton="true" ejs-for="ProductId" allowFiltering="true" placeholder="Выберите продукт" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDown", Adaptor = "UrlAdaptor"})">
+                <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+        </div>
+        <div class="col-12 col-md-4 col-sm-12">
+            <ejs-textbox id="ProductCode" placeholder="Напишите штрих код сюда" showClearButton="true" floatLabelType="Auto"></ejs-textbox>
+        </div>
+        <div class="col-12 col-md-4 mt-3  col-sm-12">
+            <ejs-dropdownlist id="SupplierId" showClearButton="true" ejs-for="SupplierId" allowFiltering="true" placeholder="Выберите поставщика" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Suppliers/ForDropDown", Adaptor = "UrlAdaptor"})">
+                <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+        </div>
+    </div>
+    <div class="row m-4">
+        <div class="col-12 col-md-4 col-sm-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="IncomeCost" type='text' />
+                <label asp-for="IncomeCost" class="e-float-text e-label-top">Цена прихода</label>
+            </div>
+
+        </div>
+        <div class="col-12 col-md-3 col-sm-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="SaleCost" type='text' />
+                <label asp-for="SaleCost" class="e-float-text e-label-top">Цена продажи(приход + %)</label>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3 col-sm-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="OptCost" type='text' />
+                <label asp-for="OptCost" class="e-float-text e-label-top">Оптовая цена(приход + %)</label>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 col-sm-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="Kurs" type='text' />
+                <label asp-for="Kurs" class="e-float-text e-label-top">Курс($=>тг)</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="control-wrapper m-1">
+        <ejs-grid id="Grid" locale="ru-RU" actionBegin="OnActionBegin" actionComplete="OnActionComplate" gridLines="Both" allowResizing="true" height="400" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})">
+            <e-grid-aggregates>
+                <e-grid-aggregate>
+                    <e-aggregate-columns>
+                        <e-aggregate-column field="Amount" type="Sum" footerTemplate="Сумма:${Sum}"></e-aggregate-column>
+                    </e-aggregate-columns>
+                </e-grid-aggregate>
+            </e-grid-aggregates>
+            <e-grid-editSettings newRowPosition="Top" allowAdding="true" allowDeleting="true" allowEditing="true"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="ProductId" isPrimaryKey="true" allowEditing="false" type="number" visible="false"></e-grid-column>
+                <e-grid-column field="ProductName" allowEditing="false" validationRules="@(new { required=true })" headerText="Продукт" edit="@(new {@params = DropDownList} )" editType="dropdownedit" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="Amount" type="number" width="130px" headerText="Количество" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Volume" allowEditing="false" type="number" width="130px" headerText="Кол.за ед-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+                <e-grid-column field="VolumeTotal" allowEditing="false" type="number" width="130px" headerText="Кол.общ-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+                <e-grid-column field="IncomeCost" width="130px" minWidth="50" headerText="Входящая Цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="SaleCost" width="130px" minWidth="50" headerText="Цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="OptCost" width="130px" minWidth="50" headerText="Отповая цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="SupplierId" headerText="Поставщик" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Suppliers/ForDropDown", Adaptor = "UrlAdaptor"})" foreignKeyField="Id" foreignKeyValue="Name" edit="@(new {@params = DropDownList} )" editType="dropdownedit" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Kurs" minWidth="50" headerText="Курс" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Comments" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div class="container-fluid row mt-2">
+        <div class="col col-md-1">
+            <button class="btn btn-primary" onclick="CloseIncome()">Закрыть</button>
+        </div>
+        <div class="col col-md-9">
+            <div class="h1 text-center">Общая сумма: <span style="color:blue;" id="totalval">0.0 </span>$</div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+
+    <partial name="~/Views/Partials/NotifyView.cshtml" />
+    <script type="text/javascript">
+
+        var grid;
+        var toastObj;
+        window.addEventListener("load", function () {
+            grid = document.getElementById("Grid").ej2_instances[0];
+        });
+        var toasts = [
+            { title: 'Предупреждение!', content: 'There was a problem with your network connection.', cssClass: 'e-toast-warning', icon: 'e-warning toast-icons' },
+            { title: 'Успех!', content: 'Успешно Сохранено!', cssClass: 'e-toast-success', icon: 'e-success toast-icons' },
+            { title: 'Ошибка!', content: 'Произошло ошибка с подключениями', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' },
+            { title: 'Информация!', content: 'Please read the comments carefully.', cssClass: 'e-toast-info', icon: 'e-info toast-icons' }];
+
+        setTimeout(
+            () => {
+
+            }, 800);
+        function creatednotify() {
+            toastObj = this;
+        }
+
+        function CloseIncome() {
+            document.querySelector("#ProductCode").ej2_instances[0].focusIn();
+            if (grid.dataSource.length <= 0) {
+                toastObj.show({ title: 'Пустая дата!', content: 'Пусто', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                return;
+            }
+            var arr = new Array();
+            var dsource = grid.dataSource;
+            var ischecked = false;
+            for (var i = 0; i < dsource.length; i++) {
+                if (dsource[i].Amount <= 0 || dsource[i].IncomeCost <= 0 || dsource[i].OptCost <= 0 || dsource[i].SaleCost <= 0 || dsource[i].SupplierId < 0 || dsource[i].ProductId < 0) {
+                    toastObj.show({ title: 'Ошибка!', content: 'Некоторые продукты не корректно сохранились!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                    ischecked = true;
+                    break;
+                }
+            }
+            if (ischecked) {
+                return;
+            }
+            for (var i = 0; i < dsource.length; i++) {
+                arr[i] = { "Amount": dsource[i].Amount, "IncomeCost": dsource[i].IncomeCost, "OptCost": dsource[i].OptCost, "ProductId": dsource[i].ProductId, "SaleCost": dsource[i].SaleCost, "SupplierId": dsource[i].SupplierId, "Comments": dsource[i].Comments, "Kurs": dsource[i].Kurs }
+            }
+            var dataaa = JSON.stringify(arr)
+            $.ajax({
+                type: "POST",
+                url: "/ProductIncoms/Insert2",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: dataaa,
+                success: function (data) {
+                    if (Array.isArray(data)) {
+                        document.getElementById('dialogcontent111').innerHTML = "";
+                        for (var i = 0; i < grid.dataSource.length; i++) {
+                            for (var j = 0; j < data.length; j++) {
+                                if (grid.dataSource[i].ProductId == data[j].Id) {
+                                    grid.dataSource.splice(j, 1);
+                                    grid.refresh();
+                                }
+                            }
+                        }
+                        toastObj.show({ title: 'Ошибка!', content: 'Продукты не были добавлены повторите!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                    }
+                    else {
+                        toastObj.show({ title: 'Успех!', content: data, cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                        grid.dataSource = new Array();
+                        document.getElementById('totalval').innerHTML = 0.0;
+                        
+                    }
+                },
+                error: function (request, error) {
+                    toastObj.show({ title: 'Ошибка!', content: 'Произошло ошибка с соединениями проверьте интернет', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                }
+            });
+
+
+        }
+
+    </script>
+    <script>
+        function OnActionComplate(args) {
+            SetTotalValue();
+            if (args.action == "add") {
+
+            }
+        }
+        function OnActionBegin(args) { // расчет данных
+            if (args.requestType == "save" && args.action != "add") {
+                args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+                grid.updateRow(args.rowIndex, args.data); 
+                grid.aggregateModule.refresh(args.data);
+                
+                
+            }
+        }
+
+        function SetTotalValue() {
+            var totaltenge = 0.0;
+            if (grid.dataSource != null) {
+                for (var i = 0; i < grid.dataSource.length; i++) {
+                    
+                    totaltenge += (parseFloat(grid.dataSource[i].VolumeTotal) * parseFloat(grid.dataSource[i].IncomeCost));
+                }
+            }
+            document.getElementById('totalval').innerHTML = (totaltenge).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');;
+        }
+
+        document.getElementById('ProductCode').addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                GetProduct(document.getElementById("ProductCode").ej2_instances[0].value);
+
+            }
+        });
+        function GetProduct(value) {
+            var entryval = document.getElementById("ProductCode").ej2_instances[0].value;
+            if (typeof value != "number")
+                var queryquery = { "ProductCode": value };
+            else
+                var queryquery = { "ProductCode": value, "PrId": value };
+            $.ajax({
+                type: "POST",
+                url: "/ProductIncoms/Get",
+                data: queryquery,
+                success: function (data) {
+                    var flag = false;
+                    if (typeof data != "string") {
+                        toastObj.show({ title: 'Успех!', content: 'Продукт получен!', cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                        if (grid.dataSource != null) {
+                            for (var i = 0; i < grid.dataSource.length; i++) {
+                                if (grid.dataSource[i].ProductId == data.ProductId) {
+                                    grid.dataSource[i].Amount += data.Amount;
+                                    grid.dataSource[i].Volume = data.Volume;
+                                    grid.dataSource[i].VolumeTotal = grid.dataSource[i].Amount * data.Volume;
+
+                                    grid.updateRow(i, grid.dataSource[i]); 
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (flag == false) {
+                            var income = parseFloat(document.getElementById("IncomeCost").value);
+                            var sale = parseFloat(document.getElementById("SaleCost").value);
+                            var optc = parseFloat(document.getElementById("OptCost").value);
+                            var kurs = parseFloat(document.getElementById("Kurs").value);
+                            var suppl = parseInt(document.getElementById("SupplierId").ej2_instances[0].value);
+
+                            if (isNaN(income)) {
+                                income = 0;
+                            }
+                            if (isNaN(kurs)) {
+                                kurs = 1;
+                            }
+                            if (isNaN(sale)) {
+                                sale = 0;
+                            }
+                            else {
+                                sale = ((sale * income) / 100) + income;
+                            }
+                            if (isNaN(optc)) {
+                                optc = 0;
+                            }
+                            else {
+                                optc = ((optc * income) / 100) + income;
+                            }
+                            if (isNaN(suppl)) {
+                                suppl = null;
+                            }
+                            var mydata = {
+                                "ProductId": data.ProductId, "Amount": data.Amount,
+                                "IncomeCost": income, "SaleCost": sale, "OptCost": optc, "SupplierId": suppl, "Kurs": kurs, "Volume": data.Volume, "VolumeTotal": data.Volume, "ProductName": data.ProductName }
+                            grid.addRecord(mydata);
+                        }
+                        document.getElementById("ProductCode").ej2_instances[0].value = null;
+                        //grid.refresh();
+                        SetTotalValue();
+
+                    }
+                    else {
+                        document.getElementById("ProductCode").ej2_instances[0].value = null;
+                        toastObj.show({ title: 'Информация!', content: data, cssClass: 'e-toast-info', icon: 'e-info toast-icons' });
+                    }
+
+                },
+                error: function (request, error) {
+                    toastObj.show({ title: 'Ошибка!', content: 'Сеть логает!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                }
+            });
+            
+        }
+        function SelectedProduct(args) {
+            GetProduct(args.itemData.Id);
+        }
+        document.addEventListener("keypress", function (e) {
+            if (e.target.tagName !== "INPUT") {
+                var input = document.querySelector("#ProductCode");
+                input.focus();
+                input.value = e.key;
+                e.preventDefault();
+            }
+        });
+    </script>
+}
+
+

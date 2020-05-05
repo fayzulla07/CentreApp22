@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/10/2020 14:08:51" ReportInfo.Modified="04/22/2020 00:13:45" ReportInfo.CreatorVersion="2020.1.0.0">
+  <Styles Name="Blue">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="LightSkyBlue" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="LightSkyBlue" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="AliceBlue" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqtJlkhWcBSbrTGERogY6EjDVYyyUweqoIemTw0GrJwpgp+R+zixuJJuny+q7SebDLoJ3LWodPvlW/F5vAve2weq5mFmt1Zm0lF/FuoMnxjj6tPbPApGhmQ0FPO2L9+kTmtN+8JwsLmtkeErd8rkW4zw==">
+      <TableDataSource Name="Table" Alias="Incoms" DataType="System.Int32" Enabled="true" SelectCommand="select pin.Id, p.ID as ProductId, p.Name,p.Code,s.Name as SupplierName,&#13;&#10;	   pin.IncomeCost,pin.SaleCost,pin.OptCost,pin.RegDt, u.Name as UserName&#13;&#10;from ProductIncoms pin inner join Products p on p.Id=pin.ProductId&#13;&#10;	 left join Users u on pin.UserId=u.Id  &#13;&#10;	 left join Suppliers s on pin.SupplierId=s.Id&#13;&#10;where RegDt between @da1 and @da2&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="Id" DataType="System.Int32"/>
+        <Column Name="ProductId" DataType="System.Int32"/>
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+        <Column Name="SupplierName" DataType="System.String"/>
+        <Column Name="IncomeCost" DataType="System.Double"/>
+        <Column Name="SaleCost" DataType="System.Double"/>
+        <Column Name="OptCost" DataType="System.Double"/>
+        <Column Name="RegDt" DataType="System.DateTime"/>
+        <Column Name="UserName" DataType="System.String"/>
+        <CommandParameter Name="da1" DataType="4" Size="20" Expression="[da1]" DefaultValue="09.04.2019"/>
+        <CommandParameter Name="da2" DataType="4" Size="20" Expression="[da2]" DefaultValue="11.04.2019"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="da1" DataType="System.DateTime"/>
+    <Parameter Name="da2" DataType="System.DateTime"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Приход товара" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="40.66" Width="718.2" Height="28.35">
+      <TextObject Name="Text3" Width="151.2" Height="28.35" Fill.Color="LightSkyBlue" Text="Продукт" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text7" Left="151.2" Width="113.4" Height="28.35" Fill.Color="LightSkyBlue" Text="Поставщик" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text9" Left="264.6" Width="94.5" Height="28.35" Fill.Color="LightSkyBlue" Text="Цена приходная" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text11" Left="359.1" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Цена продажы" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text13" Left="444.15" Width="85.05" Height="28.35" Fill.Color="LightSkyBlue" Text="Цена оптовая" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text15" Left="529.2" Width="94.5" Height="28.35" Fill.Color="LightSkyBlue" Text="Дата рег-ции" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text17" Left="623.7" Width="94.5" Height="28.35" Fill.Color="LightSkyBlue" Text="Пользователь" Font="Arial, 10pt, style=Bold" Style="Header"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="71.86" Width="718.2" Height="18.9" EvenStyle="EvenRows" DataSource="Table">
+      <TextObject Name="Text2" Width="151.2" Height="18.9" Text="[Incoms.Name]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text6" Left="151.2" Width="113.4" Height="18.9" Text="[Incoms.SupplierName]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text8" Left="264.6" Width="94.5" Height="18.9" Text="[Incoms.IncomeCost]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text10" Left="359.1" Width="85.05" Height="18.9" Text="[Incoms.SaleCost]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text12" Left="444.15" Width="85.05" Height="18.9" Text="[Incoms.OptCost]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text14" Left="529.2" Width="94.5" Height="18.9" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Incoms.RegDt]" Format="Date" Format.Format="d" AutoWidth="true" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text16" Left="623.7" Width="94.5" Height="18.9" Text="[Incoms.UserName]" Font="Arial, 10pt" Style="Data"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="93.62" Width="718.2" Height="18.9">
+      <TextObject Name="Text18" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="LightSkyBlue" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

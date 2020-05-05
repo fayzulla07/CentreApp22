@@ -1,0 +1,58 @@
+﻿
+
+@model FastReport.Web.WebReport
+
+
+@section In_nav{
+    <partial name="~/Views/Partials/SelectReportView.cshtml" />
+}
+
+
+<div class="container-fluid ">
+
+    <div id="renderingreport" class="row mt-2">
+
+        <div id="reportparaterets" class="col col-md-2">
+
+            <div id="selectedvalid">
+
+            </div>
+        </div>
+        <div  class="webreport col-md-8">
+            @(await Model.Render())
+        </div>
+    </div>
+    <div class="col col-md-2">
+
+    </div>
+</div>
+
+
+<script>
+    function clickedselect() {
+        var getselect = document.getElementById('sval').value;
+        var d = { "sval": getselect };
+        GetDataAjax("/AllReports/Report", '#svalform');
+    }
+
+    function GetDataAjax(Url, formid) {
+        var msg = $(formid).serialize();
+        $.ajax({
+            type: "POST",
+            url: Url,
+            cache: false,// Кеширование
+            timeout: 30000,// Верямя ожидания ответа
+            dataType: "html", // Тип данных 
+            data: msg,
+            success: function (data) {
+                $('#renderingreport').html(data);
+            },
+            beforeSend: function (data) {// Функция срабатывает в период ожидания данных
+                $('#renderingreport').html('<p>Ожидание данных...</p>');
+            },
+            error: function (request, error) {
+                $('#renderingreport').html('<p>Плохое соединение сети...</p>');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Поставщики";
+
+}
+
+    <div class="h3" style="margin:40px 40px 20px 40px">Поставщики</div>
+
+<div class="control-section m-1">
+    <div class="control-wrapper">
+        <ejs-grid id="Grid" allowResizing="true" allowSorting="true" allowFiltering="true" height="500" allowPaging="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update"})">
+            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal" showDeleteConfirmDialog="true"></e-grid-editSettings>
+            <e-grid-pageSettings pageCount="7" pageSize="50"></e-grid-pageSettings>
+
+            <e-data-manager url="/Suppliers/Setting" insertUrl="/Suppliers/Insert" updateUrl="/Suppliers/Update" removeUrl="/Suppliers/Delete" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-columns>
+                <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
+                <e-grid-column field="Name" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" headerText="Имя"></e-grid-column>
+                <e-grid-column field="Description" minWidth="50" headerText="Описание" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="PhoneNumber" minWidth="50"  type="number" headerText="Номер телефона" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="Email" minWidth="50" headerText="Почта" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="HisDebt" minWidth="50" headerText="Его долг" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="MyDebt" minWidth="50" headerText="Мой долг" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+
+    <style>
+        .orientationcss .e-headercelldiv {
+            position: relative;
+            color: black;
+            font-size: 16px;
+        }
+    </style>
+
+}
+

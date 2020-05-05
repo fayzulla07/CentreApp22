@@ -1,0 +1,60 @@
+﻿<div class="container">
+    <h1>Хон кўприк - Гилам!</h1>
+    <br />
+    <form action="/home/gettotal" method="post">
+        <label for="DT">Выберите Дату</label>
+        <input class="form-control" style="max-width:200px" type="date" name="DT" id="DT" value="" />
+        <br />
+        <button type="submit" class="btn btn-primary">Получить</button>
+    </form>
+    <br />
+    <div class="row">
+        @if (User.IsInRole("admin"))
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small primary coloured-icon">
+                    <i class="icon fa fa-users fa-3x"></i>
+                    <div class="info">
+                        <div class="h4">Приход</div>
+                        <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
+                        <p><b>@ViewBag.totall.IncomeCost тг</b></p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+                <div class="info">
+                    <div class="h4">Продажа</div>
+                    <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
+                    <p><b>@ViewBag.totall.SaleTotal тг</b></p>
+                </div>
+            </div>
+        </div>
+        @if (User.IsInRole("admin"))
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small info coloured-icon">
+                    <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+                    <div class="info">
+                        <div class="h4">Прибыль</div>
+                        <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
+                        <p><b>@ViewBag.pribl тг</b></p>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+                <div class="info">
+                    <div class="h4">Возврат</div>
+                    <h4>@ViewBag.rtotall.RegDt.ToString("dd.MM.yyyy")</h4>
+                    <p><b>@ViewBag.rtotall.ReturnCost тг</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>      

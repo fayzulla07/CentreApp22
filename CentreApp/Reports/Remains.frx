@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/10/2020 16:26:35" ReportInfo.Modified="04/22/2020 00:14:09" ReportInfo.CreatorVersion="2020.1.0.0">
+  <Styles Name="Blue">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="LightSkyBlue" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="LightSkyBlue" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="AliceBlue" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqtJlkhWcBSbrTGERogY6EjDVYyyUweqoIemTw0GrJwpgp+R+zixuJJuny+q7SebDLoJ3LWodPvlW/F5vAve2weq5mFmt1Zm0lF/FuoMnxjj6tPbPApGhmQ0FPO2L9+kTmtN+8JwsLmtkeErd8rkW4zw==">
+      <TableDataSource Name="Table" Alias="Remains" DataType="System.Int32" Enabled="true" SelectCommand="select p.ID as ProductId, p.Name,p.Code,v.IncomeCost,v.SaleCost,v.OptCost,p.RemainCount, p.Limit&#13;&#10;from Products p left join AvCurrentCosts v on p.Id=v.ProductId">
+        <Column Name="ProductId" DataType="System.Int32"/>
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+        <Column Name="IncomeCost" DataType="System.Double"/>
+        <Column Name="SaleCost" DataType="System.Double"/>
+        <Column Name="OptCost" DataType="System.Double"/>
+        <Column Name="RemainCount" DataType="System.Double"/>
+        <Column Name="Limit" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="RemainCountTotal" Expression="[Remains.RemainCount]" Evaluator="Data1" PrintOn="ColumnFooter1"/>
+    <Total Name="SaleCostTotal" Expression="[Remains.SaleCost]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Остатки на [Date]" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="40.66" Width="718.2" Height="28.35">
+      <TextObject Name="Text3" Width="66.15" Height="18.9" Fill.Color="LightSkyBlue" Text="#" HorzAlign="Center" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text5" Left="66.15" Width="179.55" Height="18.9" Fill.Color="LightSkyBlue" Text="Товар" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text7" Left="245.7" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" Text="Код товара" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text9" Left="368.55" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" Text="Остаток" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text11" Left="491.4" Width="113.4" Height="18.9" Fill.Color="LightSkyBlue" Text="Цена продажы" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text13" Left="604.8" Width="113.4" Height="18.9" Fill.Color="LightSkyBlue" Text="Лимит" Font="Arial, 10pt, style=Bold" Style="Header"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="71.86" Width="718.2" Height="18.9" EvenStyle="EvenRows" Guides="9.45,9.45,0,0,0,0,0" DataSource="Table">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Text="[Row#]" HorzAlign="Center" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text4" Left="66.15" Width="179.55" Height="18.9" Text="[Remains.Name]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text6" Left="245.7" Width="122.85" Height="18.9" Text="[Remains.Code]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text8" Left="368.55" Width="122.85" Height="18.9" Text="[Remains.RemainCount]" Font="Arial, 10pt" Style="Data">
+        <Highlight>
+          <Condition Expression="Value &lt;= [Remains.Limit]" Fill.Color="LightCoral" TextFill.Color="White" Font="Arial, 10.2pt" ApplyFill="true" ApplyFont="true"/>
+        </Highlight>
+      </TextObject>
+      <TextObject Name="Text10" Left="491.4" Width="113.4" Height="18.9" Text="[Remains.SaleCost]" Font="Arial, 10pt" Style="Data"/>
+      <TextObject Name="Text12" Left="604.8" Width="113.4" Height="18.9" Text="[Remains.Limit]" Font="Arial, 10pt" Style="Data"/>
+    </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="93.62" Width="718.2" Height="37.8">
+      <TextObject Name="Text17" Left="245.7" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" Text="Итого:" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text18" Left="122.85" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text20" Left="368.55" Width="122.85" Height="18.9" Fill.Color="LightSkyBlue" Text="[RemainCountTotal]" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text21" Left="491.4" Width="113.4" Height="18.9" Fill.Color="LightSkyBlue" Text="[SaleCostTotal]" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Left="604.8" Width="113.4" Height="18.9" Fill.Color="LightSkyBlue" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+    </ColumnFooterBand>
+    <PageFooterBand Name="PageFooter1" Top="134.28" Width="718.2" Height="18.9">
+      <TextObject Name="Text14" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="LightSkyBlue" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

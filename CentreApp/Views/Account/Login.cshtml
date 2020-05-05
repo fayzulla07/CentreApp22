@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+@model Users
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="~/vali/css/main.css">
+    <!-- Font-icon css-->
+    <title>XAN</title>
+</head>
+<body>
+    <section class="material-half-bg">
+        <div class="cover"></div>
+    </section>
+    <section class="login-content">
+        <div class="logo">
+            <h1>Хон кўприк - Гилам</h1>
+        </div>
+        <div class="login-box">
+            <form class="login-form" asp-action="Login" method="post" asp-controller="Account" asp-antiforgery="true">
+                <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>ВХОД</h3>
+                <div class="validation" style="color:red;" asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label class="control-label">Логин</label>
+                    <input class="form-control" name="LoginName" type="text" placeholder="Введите логин" autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Пароль</label>
+                    <input class="form-control" name="Password" type="password" placeholder="Введите пароль">
+                </div>
+                <div class="form-group btn-container">
+                    <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>Войти</button>
+                </div>
+            </form>
+           
+        </div>
+    </section>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="~/vali/js/plugins/pace.min.js"></script>
+</body>
+</html>

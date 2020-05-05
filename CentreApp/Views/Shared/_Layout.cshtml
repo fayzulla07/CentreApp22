@@ -1,0 +1,118 @@
+﻿    
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="~/vali/css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    @* Syncfusion Essential JS 2 Styles *@
+    <link href="~/syncfusion/styles/compatibility/material.css" rel="stylesheet" />
+</head>
+<body class="app sidebar-mini">
+    <!-- Navbar-->
+    <header class="app-header">
+        <a class="app-header__logo" href="/">Хон кўприк</a>
+        <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <!-- Navbar Right Menu-->
+        <ul class="app-nav">
+            <li>
+                @RenderSection("In_nav", required: false)
+            </li>
+            <!-- User Menu-->
+            <li class="dropdown">
+                <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+                <ul class="dropdown-menu settings-menu dropdown-menu-right">
+                    <li><a class="dropdown-item" href="/account/logout"><i class="fa fa-sign-out fa-lg"></i> Выйти</a></li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+        <div class="app-sidebar__user">
+            <img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image">
+            <div>
+                <p class="app-sidebar__user-name">@User.Identity.Name</p>
+                <p class="app-sidebar__user-designation">@User.FindFirst("RoleDesc").Value</p>
+            </div>
+        </div>
+        <ul class="app-menu">
+            <li><a class="app-menu__item" href="/productsales/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Продажа</span></a></li>
+            <li><a class="app-menu__item" href="/productreturns/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">История продажи</span></a></li>
+
+
+            @if (User.IsInRole("admin"))
+            {
+                <li><a class="app-menu__item" href="/productincoms/newincoms"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Приход</span></a></li>
+                <li><a class="app-menu__item" href="/productincoms/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">История Прихода</span></a></li>
+            }
+            <li><a class="app-menu__item" href="/returns/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">История Возврата</span></a></li>
+            <li><a class="app-menu__item" href="/customer/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Покупатели</span></a></li>
+            <li><a class="app-menu__item" href="/allreports/index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Отчеты</span></a></li>
+            @if (User.IsInRole("admin"))
+            {
+                <li class="treeview">
+                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Настройки</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a class="treeview-item" href="/users/index"><i class="icon fa fa-circle-o"></i> Пользователи</a></li>
+                        <li><a class="treeview-item" href="/unit/index"><i class="icon fa fa-circle-o"></i> Единицы</a></li>
+                        <li><a class="treeview-item" href="/product/index"><i class="icon fa fa-circle-o"></i> Продукты</a></li>
+                        <li><a class="treeview-item" href="/suppliers/index"><i class="icon fa fa-circle-o"></i> Поставщики</a></li>
+                        <li><a class="treeview-item" href="/ProductType/index"><i class="icon fa fa-circle-o"></i> Тип продукта</a></li>
+                        <li><a class="treeview-item" href="/CustomerType/index"><i class="icon fa fa-circle-o"></i> Тип покупателя</a></li>
+                    </ul>
+                </li>
+            }
+
+        </ul>
+    </aside>
+    <main class="app-content">
+        @RenderSection("In_hkwrapper", required: false)
+        <div class="row">
+            <div class="col-md-12 m-0 p-0">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="~/vali/js/jquery-3.3.1.min.js"></script>
+    <script src="~/vali/js/popper.min.js"></script>
+    <script src="~/vali/js/bootstrap.min.js"></script>
+    <script src="~/vali/js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="~/vali/js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    
+    <script src="~/syncfusion/dist/ej2.min.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        ej.base.L10n.load({
+            'ru-RU': {
+                'grid': {
+                    'Add': 'Добавить',
+                    'Edit': 'Изменить',
+                    'Delete': 'Удалить',
+                    'Cancel': 'Отмена',
+                    'Update': 'Обновить',
+                    'ConfirmDelete': 'Вы уверены, что хотите удалить запись?',
+                    'OKButton': 'Да',
+                    'CancelButton': 'Нет'
+                },
+                'pager': {
+                    'currentPageInfo': '{0} из {1} ',
+                    'totalItemsInfo': '({0} предметов)'
+                }
+            }
+        });
+    </script>
+    <ejs-scripts></ejs-scripts>
+</body>
+</html>

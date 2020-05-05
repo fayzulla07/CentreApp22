@@ -1,0 +1,197 @@
+﻿
+
+@{
+    ViewData["Title"] = "Возврат";
+    var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { AllowFiltering = true, PopupHeight = "200px", Placeholder = "Выберите", ShowClearButton = true };
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Delete");
+    toolbarItems.Add(new { text = "Возврат", tooltipText = "Возврат", prefixIcon = "e-expand", id = "returnclick" });
+}
+<div id='container123'>
+    <ejs-dialog id='dialog' beforeOpen="OnBeforeOpenDialog" allowDragging="true" header="Возврат товара" showCloseIcon="true" isModal="true" target="#container123" minHeight="200px" width="300px">
+        <e-content-template>
+            <label for="dialogcontent111" class="e-label">Введите количество возврата(M³)</label>
+            <input id="dialogcontent111" onchange="validchange()" class="form-control" />
+            <div class="text-danger" id="textrequiredcustom"></div>
+            <label for="dialogcontentcomment" class="e-label">Комментарий</label>
+            <input id="dialogcontentcomment" class="form-control" />
+        </e-content-template>
+        <e-dialog-buttons>
+            <e-dialog-dialogbutton click="addclick" buttonModel="@(new { content = "Добавить", isPrimary = true })"></e-dialog-dialogbutton>
+        </e-dialog-buttons>
+    </ejs-dialog>
+</div>
+<div id='container1932'>
+    <ejs-dialog id='dialog2' beforeOpen="OnBeforeOpenDialog2" allowDragging="true" header="Возврат товара" showCloseIcon="true" isModal="true" target="#container1932" minHeight="100px" width="250px">
+        <e-content-template>
+            <div>Выберите строку затем нажмите.</div>
+        </e-content-template>
+        <e-dialog-buttons>
+            <e-dialog-dialogbutton click="addclickdelete" buttonModel="@(new { content = "Да", isPrimary = true })"></e-dialog-dialogbutton>
+        </e-dialog-buttons>
+    </ejs-dialog>
+</div>
+<div class="h3" style="margin:40px 40px 20px 40px">История продажи</div>
+
+<div class="control-section m-1">
+    <div class="control-wrapper">
+        <ejs-grid id="Grid" allowFiltering="true" actionFailure="failaction222"  actionComplete="ActComplate" rowSelected="rowselected" actionBegin="ActionBegin" locale="ru-RU" allowResizing="true" allowSorting="true" 
+                  gridLines="Both" allowGrouping="true" height="500" allowPaging="true" toolbar="toolbarItems" toolbarClick="toolbarClick">
+            <e-grid-editSettings showDeleteConfirmDialog="true" allowAdding="true" allowDeleting="true" mode="Normal"></e-grid-editSettings>
+            <e-grid-pageSettings pageCount="7" pageSize="50"></e-grid-pageSettings>
+            <e-grid-groupsettings showGroupedColumn="true"></e-grid-groupsettings>
+            <e-data-manager url="/ProductReturns/GetAll" removeUrl="/ProductReturns/Delete" adaptor="UrlAdaptor"></e-data-manager>
+            <e-grid-columns>
+                <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
+                <e-grid-column field="OrderNumber" minWidth="50" width="80px" headerText="#" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Name" headerText="Имя" width="400px" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})"></e-grid-column>
+                <e-grid-column field="AmountUnit" width="100px" allowGrouping="false" minWidth="50" headerText="Количество" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="SaleCost" width="140px" allowGrouping="false" minWidth="50" headerText="Цена продажи" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Client" minWidth="50" width="150px" headerText="Клиент" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="RegDt" width="120px" format="dd.MM.yyyy" allowGrouping="false" minWidth="50" headerText="Дата Регистр" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="OptCost" width="80px" minWidth="50" headerText="Оптовая?" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="IsBank" width="100px" type="boolean" editType="booleanedit" displayAsCheckBox="true" width="120px" minWidth="50" te headerText="Банк" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Comments"  width="300px" allowGrouping="false" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+@section Scripts{
+    <partial name="~/Views/Partials/NotifyView.cshtml" />
+    <script>
+        var closeDialog = true;
+        var closeDialog2 = true;
+        var dialog;
+        var dialog2;
+        var grid;
+        var obdata;
+        var Amount = 0.0;
+        window.addEventListener("load", function () {
+            dialog = document.getElementById("dialog").ej2_instances[0];
+            dialog2 = document.getElementById("dialog2").ej2_instances[0];
+            grid = document.getElementById("Grid").ej2_instances[0];
+        });
+        function failaction222(args) {
+            toastObj.show({ title: 'Ошибка!', content: args.error[0].error.responseText, cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+        }
+        function validchange() {
+            validate();
+        }
+        function addclickdelete() {
+            dialog2.hide();
+        }
+        function toolbarClick(args) {
+            if (args.item.id === 'returnclick') {
+                
+                if (grid.getSelectedRecords()[0] != null) {
+
+                    var dataa = grid.getSelectedRecords()[0];
+                    Amount = grid.getSelectedRecords()[0].Amount;
+                    document.getElementById('dialogcontent111').value = Amount.toString();
+                    document.getElementById('dialogcontentcomment').value = "";
+                    obdata = {
+                        "Id": dataa.Id, "Name": dataa.Name, "Amount": dataa.Amount, "SaleCost": dataa.SaleCost
+                    }
+                    dialog.show();
+                }
+                else {
+                    dialog2.show();
+                }
+                
+            }
+        }
+        function rowselected(args) {
+           
+        }
+        var toastObj;
+        setTimeout(
+            () => {
+
+            }, 800);
+        function creatednotify() {
+            toastObj = this;
+        }
+        function addclick() {
+            if (validate()) {
+                var dataa = obdata;
+                var inpval = document.getElementById('dialogcontent111').value;
+                var comment = document.getElementById('dialogcontentcomment').value;
+                dataa.Amount = inpval.replace('.', ',');
+                dataa.Comments = comment;
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ProductReturns/Insert",
+                    data: dataa,
+                    success: function (data) {
+                        dialog.hide();
+                        if(data == "1")
+                            toastObj.show({ title: 'Успех!', content: "Успешно возвращено!", cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+                        else if(data == "-1") {
+                            toastObj.show({ title: 'Ошибка!', content: 'Произошло ошибка с сервера!', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                        }
+                        else {
+                            toastObj.show({ title: 'Предупреждение!', content: data, cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                        }
+
+                    },
+                    error: function (request, error) {
+                        toastObj.show({ title: 'Ошибка!', content: 'Произошло ошибка с соединениями', cssClass: 'e-toast-danger', icon: 'e-error toast-icons' });
+                        dialog.hide();
+                    }
+                });
+
+            }
+        }
+        function OnBeforeOpenDialog(args) {
+            if (closeDialog) {
+                args.cancel = true;
+                closeDialog = false;
+            }
+        }
+        function OnBeforeOpenDialog2(args) {
+            if (closeDialog2) {
+                args.cancel = true;
+                closeDialog2 = false;
+            }
+        }
+        function validate() {
+            var value = document.getElementById('dialogcontent111').value;
+            var spanmess = document.getElementById('textrequiredcustom');
+
+            if (value == null || value.trim() == "") {
+                spanmess.innerHTML = "Это поля обязательно!";
+                return false;
+            }
+            else if (isNaN(parseFloat(value))) {
+                spanmess.innerHTML = "Значение должно быть цифрой!";
+                return false;
+            }
+            else if (parseFloat(value) > Amount) {
+                spanmess.innerHTML = "Значение не быть больше проданного!";
+                return false;
+            }
+            else {
+                spanmess.innerHTML = "";
+                return true;
+            }
+        }
+        
+        function ActionBegin(args) {
+          
+            if (args.requestType == "delete") {
+                
+            }
+            
+        }
+        function ActComplate(args) {
+            if (args.requestType == "delete") {
+                toastObj.show({ title: 'Успех!', content: "Успешно удалено", cssClass: 'e-toast-success', icon: 'e-success toast-icons' });
+            }
+        }
+
+    </script>
+    
+
+}
+
