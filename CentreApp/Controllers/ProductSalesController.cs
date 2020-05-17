@@ -57,7 +57,7 @@ namespace CentreApp.Controllers
                     return Json(new { ProductId = result.Id, result.costs.OptCost, MySaleCost = result.costs.SaleCost, Amount = 1, 
                         result.costs.SaleCost, IsOptCost = false, RemainCount =  unt, 
                         RemainFloat = result.RemainCount, Volume = result.Volume, VolumeTotal = result.Volume * 1,
-                        SaleCostTG = result.costs.SaleCost , ProductName = result.Name
+                        SaleCostTG = result.costs.SaleCost , ProductName = result.Name, OptCost2 = result.costs.OptCost
                     });
                 }
                 else

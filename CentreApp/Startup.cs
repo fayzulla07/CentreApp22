@@ -29,6 +29,9 @@ namespace CentreApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigStatic.XanNav = Configuration["XanNav"];
+            ConfigStatic.XanIndex = Configuration["XanIndex"];
+            ConfigStatic.XanLogin = Configuration["XanLogin"];
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -64,6 +67,9 @@ namespace CentreApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            //var cultureInfo = new CultureInfo("en-US");
+            //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
             app.UseStaticFiles(new StaticFileOptions

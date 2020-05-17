@@ -3,11 +3,18 @@
 <li class="nav-item m-1" style="width:250px;">
     <form id="svalform">
         <select id="sval" name="sval" class="form-control">
-
             <option value="1">Остатки</option>
-            <option value="2">Приход</option>
+            @if (User.IsInRole("admin"))
+            {
+                <option value="2">Приход</option>
+            }
             <option value="3">Продажа</option>
             <option value="4">За сегодня</option>
+            @if (User.IsInRole("admin"))
+            {
+                <option value="2">Аналитика</option>
+
+            }
         </select>
     </form>
     

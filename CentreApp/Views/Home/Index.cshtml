@@ -1,5 +1,5 @@
 ﻿<div class="container">
-    <h1>Хон кўприк - Гилам!</h1>
+    <h1>@CentreApp.ConfigStatic.XanIndex</h1>
     <br />
     <form action="/home/gettotal" method="post">
         <label for="DT">Выберите Дату</label>
@@ -13,48 +13,105 @@
         {
             <div class="col-md-6 col-lg-3">
                 <div class="widget-small primary coloured-icon">
-                    <i class="icon fa fa-users fa-3x"></i>
+                    <i class="icon fas fa-arrow-circle-down fa-3x"></i>
                     <div class="info">
                         <div class="h4">Приход</div>
                         <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
-                        <p><b>@ViewBag.totall.IncomeCost тг</b></p>
+                        <p><b>@ViewBag.totall.IncomeCost.ToString("C", new CultureInfo("kk-KZ"))</b></p>
                     </div>
                 </div>
             </div>
         }
 
         <div class="col-md-6 col-lg-3">
-            <div class="widget-small info coloured-icon">
-                <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+            <div class="widget-small primary coloured-icon">
+                <i class="icon fas fa-arrow-circle-up fa-3x"></i>
                 <div class="info">
                     <div class="h4">Продажа</div>
                     <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
-                    <p><b>@ViewBag.totall.SaleTotal тг</b></p>
+                    <p><b>@ViewBag.totall.SaleTotal.ToString("C", new CultureInfo("kk-KZ"))</b></p>
                 </div>
             </div>
         </div>
         @if (User.IsInRole("admin"))
         {
             <div class="col-md-6 col-lg-3">
-                <div class="widget-small info coloured-icon">
-                    <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+                <div class="widget-small primary coloured-icon">
+                    <i class="icon fas fa-dollar-sign fa-3x"></i>
                     <div class="info">
                         <div class="h4">Прибыль</div>
                         <h4>@ViewBag.totall.RegDt.ToString("dd.MM.yyyy")</h4>
-                        <p><b>@ViewBag.pribl тг</b></p>
+                        <p><b>@ViewBag.pribl.ToString("C", new CultureInfo("kk-KZ"))</b></p>
                     </div>
                 </div>
             </div>
         }
         <div class="col-md-6 col-lg-3">
-            <div class="widget-small info coloured-icon">
-                <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+            <div class="widget-small warning coloured-icon">
+                <i class="icon fas fa-undo-alt fa-3x"></i>
                 <div class="info">
                     <div class="h4">Возврат</div>
                     <h4>@ViewBag.rtotall.RegDt.ToString("dd.MM.yyyy")</h4>
-                    <p><b>@ViewBag.rtotall.ReturnCost тг</b></p>
+                    <p><b>@ViewBag.rtotall.ReturnCost.ToString("C", new CultureInfo("kk-KZ"))</b></p>
                 </div>
             </div>
         </div>
     </div>
+
+    @*///////////////////////////////////////////////////////////////////////////////////*@
+
+<div class="row">
+    @if (User.IsInRole("admin"))
+    {
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fas fa-poo fa-3x"></i>
+                <div class="info">
+                    <div class="h6">Всего-приход</div>
+                    <p><b>@ViewBag.Prixodob.ToString("C", new CultureInfo("en-US"))</b></p>
+                    <p><b>@ViewBag.PrixodobTG.ToString("C", new CultureInfo("kk-KZ"))</b></p>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("admin"))
+    {
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fas fa-grin-tongue-wink fa-3x"></i>
+                <div class="info">
+                    <div class="h6">Всего-Розничная</div>
+                    <p><b>@ViewBag.Prodajaob.ToString("C", new CultureInfo("en-US"))</b></p>
+                    <p><b>@ViewBag.ProdajaobTG.ToString("C", new CultureInfo("kk-KZ"))</b></p>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("admin"))
+    {
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fas fa-grin-tongue-squint fa-3x"></i>
+                <div class="info">
+                    <div class="h6">Всего-Оптовая</div>
+                    <p><b>@ViewBag.Optovayaob.ToString("C", new CultureInfo("en-US")) </b></p>
+                    <p><b>@ViewBag.OptovayaobTG.ToString("C", new CultureInfo("kk-KZ")) </b></p>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("admin"))
+    {
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fas fa-tenge fa-3x"></i>
+                <div class="info">
+                    <div class="h6">Прибыль(тг)</div>
+                    <p><b>Р:@((ViewBag.ProdajaobTG - ViewBag.PrixodobTG).ToString("C", new CultureInfo("kk-KZ"))) </b></p>
+                    <p><b>О:@((ViewBag.OptovayaobTG - ViewBag.PrixodobTG).ToString("C", new CultureInfo("kk-KZ"))) </b></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 </div>      

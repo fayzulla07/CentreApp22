@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -23,8 +24,8 @@ namespace CentreApp.Controllers
         }
         public IActionResult Index()
         {
-           var result = data.GetAll<SalesTotalByDayView>().FirstOrDefault();
-           var resultReturn = data.GetAll<ReturnTotalByDayView>().FirstOrDefault();
+           var result = data.GetAll<SalesTotalByDayView>().LastOrDefault();
+           var resultReturn = data.GetAll<ReturnTotalByDayView>().LastOrDefault();
             if(result == null)
             {
                 ViewBag.pribl = 0;
@@ -43,6 +44,13 @@ namespace CentreApp.Controllers
             {
                 ViewBag.rtotall = resultReturn;
             }
+            ViewBag.PrixodobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalIncomeTG;
+            ViewBag.ProdajaobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalSaleTG;
+            ViewBag.OptovayaobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalOptTG;
+
+            ViewBag.Prixodob = data.GetAll<AvProfit>().FirstOrDefault().TotalIncome;
+            ViewBag.Prodajaob = data.GetAll<AvProfit>().FirstOrDefault().TotalSale;
+            ViewBag.Optovayaob = data.GetAll<AvProfit>().FirstOrDefault().TotalOpt;
             return View();
         }
         public IActionResult GetTotal(DateTime? DT)
@@ -79,6 +87,13 @@ namespace CentreApp.Controllers
             {
                 ViewBag.rtotall = resultReturn;
             }
+            ViewBag.PrixodobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalIncomeTG;
+            ViewBag.ProdajaobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalSaleTG;
+            ViewBag.OptovayaobTG = data.GetAll<AvProfit>().FirstOrDefault().TotalOptTG;
+
+            ViewBag.Prixodob = data.GetAll<AvProfit>().FirstOrDefault().TotalIncome;
+            ViewBag.Prodajaob = data.GetAll<AvProfit>().FirstOrDefault().TotalSale;
+            ViewBag.Optovayaob = data.GetAll<AvProfit>().FirstOrDefault().TotalOpt;
             return View("Index");
         }
     }

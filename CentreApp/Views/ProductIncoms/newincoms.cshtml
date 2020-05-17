@@ -13,7 +13,7 @@
 
     <div class="row m-4">
         <div class="col-12 col-md-4 mt-3 col-sm-12 col-">
-            <ejs-dropdownlist id="ProductId" select="SelectedProduct" showClearButton="true" ejs-for="ProductId" allowFiltering="true" placeholder="Выберите продукт" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDown", Adaptor = "UrlAdaptor"})">
+            <ejs-dropdownlist id="ProductId"  filterType="Contains" select="SelectedProduct" showClearButton="true" ejs-for="ProductId" allowFiltering="true" placeholder="Выберите продукт" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDown", Adaptor = "UrlAdaptor"})">
                 <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
             </ejs-dropdownlist>
         </div>
@@ -69,9 +69,9 @@
             <e-grid-columns>
                 <e-grid-column field="ProductId" isPrimaryKey="true" allowEditing="false" type="number" visible="false"></e-grid-column>
                 <e-grid-column field="ProductName" allowEditing="false" validationRules="@(new { required=true })" headerText="Продукт" edit="@(new {@params = DropDownList} )" editType="dropdownedit" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
-                <e-grid-column field="Amount" type="number" width="130px" headerText="Количество" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Amount" format="N3" type="number" width="130px" headerText="Количество" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
                 <e-grid-column field="Volume" allowEditing="false" type="number" width="130px" headerText="Кол.за ед-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
-                <e-grid-column field="VolumeTotal" allowEditing="false" type="number" width="130px" headerText="Кол.общ-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+                <e-grid-column field="VolumeTotal" format="N3" type="number" width="130px" headerText="Кол.общ-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
                 <e-grid-column field="IncomeCost" width="130px" minWidth="50" headerText="Входящая Цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="SaleCost" width="130px" minWidth="50" headerText="Цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="OptCost" width="130px" minWidth="50" headerText="Отповая цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
@@ -183,7 +183,14 @@
         }
         function OnActionBegin(args) { // расчет данных
             if (args.requestType == "save" && args.action != "add") {
-                args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+
+                if (args.previousData.VolumeTotal != args.data.VolumeTotal) {
+                    args.data.Amount = args.data.VolumeTotal / args.data.Volume;
+                }
+                else {
+                    args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+                }
+
                 grid.updateRow(args.rowIndex, args.data); 
                 grid.aggregateModule.refresh(args.data);
                 

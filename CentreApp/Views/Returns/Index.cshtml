@@ -8,18 +8,18 @@
 
 <div class="control-section m-1">
     <div class="control-wrapper">
-        <ejs-grid id="Grid" locale="ru-RU" actionComplete="actioncomp" actionFailure="actionfail" allowResizing="true" allowSorting="true" height="500" allowPaging="true" allowFiltering="true"  toolbar="@(new List<string>() { "Delete", "Cancel", "Update"})">
+        <ejs-grid id="Grid" locale="ru-RU" actionComplete="actioncomp" gridLines="Both" actionFailure="actionfail" allowResizing="true" allowSorting="true" height="500" allowPaging="true" allowFiltering="true"  toolbar="@(new List<string>() { "Delete", "Cancel", "Update"})">
             <e-grid-editSettings allowDeleting="true" mode="Normal" showDeleteConfirmDialog="true"></e-grid-editSettings>
             <e-grid-pageSettings pageCount="7" pageSize="50"></e-grid-pageSettings>
 
             <e-data-manager url="/Returns/Setting" removeUrl="/Returns/Delete" adaptor="UrlAdaptor"></e-data-manager>
             <e-grid-columns>
                 <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
-                <e-grid-column field="Name" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" headerText="Имя"></e-grid-column>
-                <e-grid-column field="ReturnCost" minWidth="50" headerText="Сумма возврата" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="Name" width="400px" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" headerText="Имя"></e-grid-column>
+                <e-grid-column field="ReturnCost" minWidth="50" headerText="Сумма возврата($)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="AmountUnit" minWidth="50" headerText="Количество" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
                 <e-grid-column field="CustomerName" minWidth="50" headerText="Имя покупателя" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
-                <e-grid-column field="RegDt" format="dd.MM.yyyy" minWidth="50" headerText="Дата регистр" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+                <e-grid-column field="RegDt" format="dd.MM.yyyy" width="150px" minWidth="50" headerText="Дата регистр" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="Comments" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>

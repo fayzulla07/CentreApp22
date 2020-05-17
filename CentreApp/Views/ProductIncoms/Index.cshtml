@@ -10,31 +10,31 @@
 <div class="h3" style="margin:40px 40px 20px 40px">История прихода</div>
 <div class="container-fluid">
 
-<div class="row ml-2">
-    <div class="col" style="margin-top:40px">
-        <ejs-dropdownlist id="Prsfs" showClearButton="true" allowFiltering="true" placeholder="Выберите тип" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Producttype/ForDropDown", Adaptor = "UrlAdaptor"})">
-            <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
-        </ejs-dropdownlist>
+    <div class="row ml-2">
+        <div class="col" style="margin-top:40px">
+            <ejs-dropdownlist id="Prsfs" showClearButton="true" allowFiltering="true" placeholder="Выберите тип" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Producttype/ForDropDown", Adaptor = "UrlAdaptor"})">
+                <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+        </div>
+        <div class="col-12 col-md-3">
+            <ejs-numerictextbox min="0" id="incmm" placeholder="Цена прихода" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
+        </div>
+        <div class="col-12 col-md-2">
+            <ejs-numerictextbox min="0" id="rzncst" placeholder="Цена продажи (приход+%)" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
+        </div>
+        <div class="col-12 col-md-2">
+            <ejs-numerictextbox min="0" id="optcst" placeholder="Оптовая цена (приход+%)" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
+        </div>
+        <div class="col-12 col-md-2">
+            <button onclick="setcostss()" class="btn btn-primary">Изменить</button>
+        </div>
     </div>
-    <div class="col-12 col-md-3">
-        <ejs-numerictextbox min="0" id="incmm" placeholder="Цена прихода" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
-    </div>
-    <div class="col-12 col-md-2">
-        <ejs-numerictextbox min="0" id="rzncst" placeholder="Цена продажи (приход+%)" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
-    </div>
-    <div class="col-12 col-md-2">
-        <ejs-numerictextbox min="0" id="optcst" placeholder="Оптовая цена (приход+%)" showClearButton="true" floatLabelType="Always"></ejs-numerictextbox>
-    </div>
-    <div class="col-12 col-md-2">
-        <button onclick="setcostss()" class="btn btn-primary">Изменить</button>
-    </div>
-</div>
 </div>
 
 <div class="row m-1">
     <div class="control-wrapper col col-md-12">
-        <ejs-grid id="Grid" actionComplete="actioncomp"allowPaging="true" actionFailure="actionfail" locale="ru-RU" gridLines="Both" allowResizing="true" allowFiltering="true"  allowSorting="true" height="500" toolbar="@(new List<string>() {"Add", "Edit", "Delete", "Cancel", "Update"})">
-            <e-grid-editSettings mode="Normal" newRowPosition="Top" allowAdding="true" allowDeleting="true" allowEditing="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
+        <ejs-grid id="Grid" actionComplete="actioncomp"allowPaging="true" actionFailure="actionfail" locale="ru-RU" gridLines="Both" allowResizing="true" allowFiltering="true"  allowSorting="true" height="500" toolbar="@(new List<string>() {"Edit", "Delete", "Cancel", "Update"})">
+            <e-grid-editSettings mode="Normal" newRowPosition="Top" allowDeleting="true" allowEditing="true" showDeleteConfirmDialog="true"></e-grid-editSettings>
             <e-grid-pageSettings pageCount="7" pageSize="50" ></e-grid-pageSettings>
 
             <e-data-manager url="/ProductIncoms/Setting" insertUrl="/ProductIncoms/Insert" updateUrl="/ProductIncoms/Update" removeUrl="/ProductIncoms/Delete" adaptor="UrlAdaptor"></e-data-manager>
@@ -47,6 +47,7 @@
                 <e-grid-column field="OptCost" type="number" width="120px" validationRules="@(new { required=true})" minWidth="50" headerText="Отповая цена" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="RegDt" type="date" format="dd.MM.yyyy" width="150px" allowEditing="false" minWidth="50" headerText="Дата Регистр" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="SupplierId" headerText="Поставщик" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Suppliers/ForDropDown", Adaptor = "UrlAdaptor"})" foreignKeyField="Id" foreignKeyValue="Name" edit="new {@params = DropDownList} " editType="dropdownedit" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Kurs" width="120px" minWidth="50" headerText="Курс" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="Comments" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>

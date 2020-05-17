@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FastReport.Web;
-using FastReport.Data;
-using FastReport.Utils;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.IO;
-using CentreApp.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CentreApp.Controllers
 {
-    [Authorize(Roles = "admin, seller")]
+
     public class AllReportsController : Controller
     {
         WebReport WebReport;
@@ -29,28 +19,29 @@ namespace CentreApp.Controllers
             WebReport.Mode = WebReportMode.Preview;
 
         }
+        [Authorize(Roles = "admin, seller")]
         public IActionResult Index()
         {
             WebReport.Report.Load(@"Reports/Remains.frx");
             return View(WebReport);
         }
-
+        [Authorize(Roles = "admin, seller")]
         [HttpPost]
         public IActionResult Report(string sval)
         {
-            if (sval == "1")
+            if (sval == "1") // остаток
             {
                 WebReport.Report.Load(@"Reports/Remains.frx");
                 return PartialView("Remains", WebReport); // pass the report to View
             }
-            else if (sval == "2")
+            else if (sval == "2" && User.IsInRole("admin")) // приход
             {
                 ViewBag.da1 ="";
                 ViewBag.da2 = "";
                 WebReport.Report.Load(@"Reports/Incomes.frx");
                 return PartialView("Incomes", WebReport); // pass the report to View
             }
-            else if (sval == "3")
+            else if (sval == "3")   // продажа
             {
                 ViewBag.da1 = "";
                 ViewBag.da2 = "";
@@ -63,6 +54,16 @@ namespace CentreApp.Controllers
 
                 return PartialView("SalesRep", WebReport); // pass the report to View
             }
+            if (sval == "4") // За сегодня
+            {
+                WebReport.Report.Load(@"Reports/RepToday.frx");
+                return PartialView("RepToday", WebReport); // pass the report to View
+            }
+            if (sval == "5" && User.IsInRole("admin")) // Аналитика
+            {
+                WebReport.Report.Load(@"Reports/Analitic.frx");
+                return PartialView("Analitic", WebReport); // pass the report to View
+            }
             else
             {
                 WebReport.Report.Load(@"Reports/Remains.frx");
@@ -71,11 +72,12 @@ namespace CentreApp.Controllers
         }
         // ------------------------------------------------------------------------------------------------------------- //
         // ------------------------------------------------------------------------------------------------------------- //
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Incomes(DateTime? da1 = null, DateTime? da2 = null)
         {
             WebReport.Report.Load(@"Reports/Incomes.frx");
-            if(da1 == null || da2 == null)
+            if (da1 == null || da2 == null)
             {
                 ViewBag.da1 = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
                 ViewBag.da2 = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
@@ -89,12 +91,13 @@ namespace CentreApp.Controllers
                 WebReport.Report.SetParameterValue("da1", da1);
                 WebReport.Report.SetParameterValue("da2", da2);
             }
-            
+
             WebReport.Report.SetParameterValue("da1", da1);
             WebReport.Report.SetParameterValue("da2", da2);
             return View(WebReport);
         }
         // ------------------------------------------------------------------------------------------------------------- //
+        [Authorize(Roles = "admin, seller")]
         [HttpPost]
         public IActionResult Sales(DateTime? da1 = null, DateTime? da2 = null)
         {

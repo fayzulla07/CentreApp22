@@ -72,26 +72,28 @@ namespace CentreApp.Controllers
 
         public ActionResult Delete([FromBody]ICRUDModel<HistorySaleView> entity)
         {
-            if (User.IsInRole("admin"))
+            if(entity.key != null)
             {
-                int result = data.SqlExecuteProc("SP_DeleteProductSale", new { Id = Convert.ToInt32(entity.key) });
-                return Json(entity.value);
+                if (User.IsInRole("admin"))
+                {
+                    int result = data.SqlExecuteProc("SP_DeleteProductSale", new { Id = Convert.ToInt32(entity.key) });
+                    return Json(entity.value);
+                }
+                else
+                {
+                        var result = data.SqlQuery<HistorySaleView>("select * from HistorySaleView where Id = @myId", new { myId = entity.key }).FirstOrDefault();
+                        if(result != null)
+                        if (result.RegDt.Value.Date == DateTime.Now.Date)
+                        {
+                            data.SqlExecuteProc("SP_DeleteProductSale", new { Id = Convert.ToInt32(entity.key) });
+                            return Json(entity.value);
+                        }
+                    return StatusCode(406, "Вы не можете удалить вчерашний запись");
+                }
             }
             else
             {
-                if (entity.key != null)
-                {
-                    var result = data.SqlQuery<HistorySaleView>("select * from HistorySaleView where Id = @myId", new { myId = entity.key }).FirstOrDefault();
-                    if(result != null)
-                    if (result.RegDt.Value.Date == DateTime.Now.Date)
-                    {
-                        data.SqlExecuteProc("SP_DeleteProductSale", new { Id = Convert.ToInt32(entity.key) });
-                        return Json(entity.value);
-                    }
-                }
-                
-                
-                return StatusCode(406, "Вы не можете удалить вчерашний запись");
+                return StatusCode(406, "Вы передаете пустую значению!");
             }
         }
 

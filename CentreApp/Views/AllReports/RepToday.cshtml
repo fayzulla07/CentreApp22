@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "За сегодня";
+    Layout = null;
+}
+
+@model FastReport.Web.WebReport
+
+
+<div id="reportparaterets" class="col col-md-2">
+    <div id="selectedvalid">
+    </div>
+</div>
+<div id="renderingreport" class="webreport col-md-8">
+    @(await Model.Render())
+</div>
+
+   
+
+
+

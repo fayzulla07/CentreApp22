@@ -87,6 +87,27 @@ namespace CentreApp.Controllers
 
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
+        public IActionResult ForDropDownSales([FromBody]DataManagerRequest dm)
+        {
+            IEnumerable<Products> DataSource = data.SqlQuery<Products>("select  p.Id, p.Name + '  ||  ' + cast(p.RemainCount as varchar(30)) + u.Name as [Name] from Products as p inner join Units as u on p.UnitId = u.Id where p.RemainCount > 0");
+            DataOperations operation = new DataOperations();
+            if (dm.Search != null && dm.Search.Count > 0)
+            {
+                DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
+
+            }
+            if (dm.Sorted != null && dm.Sorted.Count > 0) //Sorting
+            {
+                DataSource = operation.PerformSorting(DataSource, dm.Sorted);
+            }
+            if (dm.Where != null && dm.Where.Count > 0) //Filtering
+            {
+                DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator);
+            }
+            int count = DataSource.Cast<Products>().Count();
+
+            return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
+        }
         [Authorize(Roles = "admin, seller")]
         public IActionResult Setting([FromBody]DataManagerRequest dm)
         {

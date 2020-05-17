@@ -45,13 +45,17 @@
                 <e-grid-column field="Id" type="number" visible="false" headerTextAlign="Center" defaultValue="0" isPrimaryKey="true" isIdentity="true" headerText="ID"></e-grid-column>
                 <e-grid-column field="OrderNumber" minWidth="50" width="80px" headerText="#" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="Name" headerText="Имя" width="400px" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})"></e-grid-column>
-                <e-grid-column field="AmountUnit" width="100px" allowGrouping="false" minWidth="50" headerText="Количество" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
-                <e-grid-column field="SaleCost" width="140px" allowGrouping="false" minWidth="50" headerText="Цена продажи" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="AmountUnit" width="120px" allowGrouping="false" minWidth="50" headerText="Колич(м³)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="AmountShtuk" width="120px" allowGrouping="false" minWidth="50" headerText="Колич (шт)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="TotalCostTG" width="140px" allowGrouping="false" minWidth="50" headerText="Цена прод(тг)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="TotalCost" width="160px" allowGrouping="false" minWidth="50" headerText="Цена продажи($)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="Client" minWidth="50" width="150px" headerText="Клиент" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-                <e-grid-column field="RegDt" width="120px" format="dd.MM.yyyy" allowGrouping="false" minWidth="50" headerText="Дата Регистр" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="RegDt" width="110px" format="dd.MM.yyyy" allowGrouping="false" minWidth="50" headerText="Дата Рег" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
                 <e-grid-column field="OptCost" width="80px" minWidth="50" headerText="Оптовая?" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-                <e-grid-column field="IsBank" width="100px" type="boolean" editType="booleanedit" displayAsCheckBox="true" width="120px" minWidth="50" te headerText="Банк" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-                <e-grid-column field="Comments"  width="300px" allowGrouping="false" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="IsBank" width="100px" type="boolean" editType="booleanedit" displayAsCheckBox="true" minWidth="50" te headerText="Банк" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Kurs"  width="110px" allowGrouping="false" minWidth="50" headerText="Курс" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="Comments"  width="250px" allowGrouping="false" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+                <e-grid-column field="UserName"  width="150px" allowGrouping="false" minWidth="50" headerText="Юзер" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>
     </div>

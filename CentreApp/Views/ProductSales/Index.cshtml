@@ -86,10 +86,10 @@
     </div>
 }
 
-<div class="h3" style="margin:40px 40px 20px 40px">Продажа продукта</div>
+<div class="h3" style="margin:10px 40px 20px 40px">Продажа продукта</div>
 <div class="row m-4">
     <div class="col col-md-4">
-        <ejs-dropdownlist id="ProductId222" select="SelectedProduct" floatLabelType="Auto" showClearButton="true" ejs-for="ProductId" allowFiltering="true"  placeholder="Выберите продукт по имени" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDown", Adaptor = "UrlAdaptor"})">
+        <ejs-dropdownlist id="ProductId222" filterType="Contains" select="SelectedProduct" floatLabelType="Auto" showClearButton="true" ejs-for="ProductId" allowFiltering="true"  placeholder="Выберите продукт по имени" popupHeight="260px" dataSource="@(new Syncfusion.EJ2.DataManager() { Url = "/Product/ForDropDownSales", Adaptor = "UrlAdaptor"})">
             <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
         </ejs-dropdownlist>
     </div>
@@ -117,17 +117,19 @@
         <e-grid-editSettings mode="Normal" newRowPosition="Top" allowAdding="true" allowDeleting="true" allowEditing="true"></e-grid-editSettings>
         <e-grid-columns>
             <e-grid-column field="ProductId" visible="false" isPrimaryKey="true" type="number" ></e-grid-column>
-            <e-grid-column field="ProductName" allowEditing="false" headerText="Продукт" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
-            <e-grid-column field="Amount" type="number" width="80px" headerText="Кол." minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" textAlign="Center"></e-grid-column>
+            <e-grid-column field="ProductName" allowEditing="false" headerText="Продукт" width="400px" minWidth="250px" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Left"></e-grid-column>
+            <e-grid-column field="Amount" format="N3" type="number" width="80px" headerText="Кол." minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true})" textAlign="Center"></e-grid-column>
 
-            <e-grid-column field="Volume" allowEditing="false" type="number" width="130px" headerText="Кол.за ед-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
-            <e-grid-column field="VolumeTotal" allowEditing="false" type="number" width="130px" headerText="Кол.общ-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+            <e-grid-column field="VolumeTotal" format="N3" type="number" width="130px" headerText="Кол.общ-м²" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
 
-            <e-grid-column field="MySaleCost" type="number" width="120px" validationRules="@(new { required=true})" minWidth="50" headerText="Цена за ед($)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-            <e-grid-column field="SaleCostTG" allowEditing="false" type="number" width="130px" validationRules="@(new { number=true})" minWidth="50" headerText="Цена за.ед ТГ" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-            <e-grid-column field="IsOptCost" type="boolean" editType="booleanedit" displayAsCheckBox="true" width="100px" minWidth="50" te headerText="Оптовая?" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-            <e-grid-column field="RemainCount" allowEditing="false" width="220px" minWidth="50" headerText="Остаток" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
-            <e-grid-column field="Comments" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="SaleCostTG" allowEditing="false" format="N1" type="number" width="150px" validationRules="@(new { number=true})" minWidth="50" headerText="Цена за M² тг" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="Summa" type="number" format="N1" width="130px" headerText="Сумма тг" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
+            <e-grid-column field="IsOptCost" visible="false" type="boolean" editType="booleanedit" displayAsCheckBox="true" width="100px" minWidth="50" te headerText="Оптовая?" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="Comments" width="180px" minWidth="50" headerText="Комментарии" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="OptCost2" allowEditing="false" width="100px" minWidth="50" headerText="Оптовая" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="RemainCount" allowEditing="false" width="100px" minWidth="50" headerText="Остаток" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="MySaleCost" allowEditing="false" type="number" width="100px" validationRules="@(new { required=true})" minWidth="50" headerText="За ед($)" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" textAlign="Center"></e-grid-column>
+            <e-grid-column field="Volume" allowEditing="false" type="number" width="100px" headerText="За ед-м3" minWidth="50" customAttributes=@(new { @class="orientationcss" } ) headerTextAlign="Center" validationRules="@(new { required=true, number=true})" textAlign="Center"></e-grid-column>
         </e-grid-columns>
     </ejs-grid>
     <div class="container-fluid row mt-2">
@@ -247,8 +249,11 @@
             var kurss = document.getElementById("Kurs").ej2_instances[0].value;
             if (grid.dataSource != null) {
                 for (var i = 0; i < grid.dataSource.length; i++) {
-                    grid.dataSource[i].SaleCostTG = kurss * grid.dataSource[i].MySaleCost;
-                    grid.updateRow(i, grid.dataSource[i]);
+                    var dsource = grid.dataSource[i];
+                    dsource.SaleCostTG = kurss * dsource.MySaleCost;
+                    dsource.Summa = dsource.VolumeTotal * dsource.SaleCostTG;
+                    dsource.OptCost2 = kurss * dsource.VolumeTotal * dsource.OptCost;
+                    grid.updateRow(i, dsource);
                 }
             }
             grid.refresh();
@@ -278,7 +283,7 @@
            
             if (grid.dataSource != null) {
                 for (var i = 0; i < grid.dataSource.length; i++) {
-                    totaltenge += grid.dataSource[i].VolumeTotal * grid.dataSource[i].SaleCostTG;
+                    totaltenge += grid.dataSource[i].Summa;
                 }
             }
 
@@ -297,7 +302,7 @@
             toastObj = this;
         }
         function Closeorder() {
-            var getval = document.getElementById("Kurs").ej2_instances[0].value
+            var getval = document.getElementById("Kurs").ej2_instances[0].value;
             document.getElementById('dialogkurs').innerHTML = getval;
             document.getElementById('dialogkurs').innerHTML += "$";
             dialog2.show();
@@ -311,29 +316,55 @@
             if (args.requestType == "save" && args.action != "add") {
                 var kurss = document.getElementById("Kurs").ej2_instances[0].value;
 
-                args.data.SaleCostTG = kurss * args.data.MySaleCost;
-                args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+                if (args.previousData.Summa != args.data.Summa) {                // Сумма changed
 
-                if (args.data.VolumeTotal > args.data.RemainFloat) {
+                    args.data.SaleCostTG = args.data.Summa / args.data.VolumeTotal;
+                    args.data.MySaleCost = args.data.SaleCostTG / kurss;
+                    
+
+                }
+                //else {
+                //    args.data.MySaleCost = args.data.SaleCostTG / kurss;
+                //    args.data.SaleCostTG = kurss * args.data.MySaleCost;
+                //}
+
+                ///////////////////////////////////////////////////////////////////////////////
+                if (args.previousData.VolumeTotal != args.data.VolumeTotal) {    // Кол общ м3 changed
+                    args.data.Amount = args.data.VolumeTotal / args.data.Volume;
+
+                    args.data.Summa = args.data.VolumeTotal * args.data.SaleCostTG;
+                }
+                if (args.previousData.Amount != args.data.Amount)   // Количество changed
+                {
+                    args.data.VolumeTotal = args.data.Volume * args.data.Amount;
+                    args.data.Summa = args.data.VolumeTotal * args.data.SaleCostTG;
+                }
+                if (args.data.VolumeTotal > args.data.RemainFloat) {  // Проверка
                     toastObj.show({ title: 'Предупреждение!', content: 'Количество не может быть больше остатка', cssClass: 'e-toast-warning', icon: 'e-warning toast-icons' });
                     args.data.Amount = args.previousData.Amount;
                     args.data.VolumeTotal = args.previousData.VolumeTotal;
-                    grid.updateRow(args.rowIndex, args.data);
-                   
                     return;
                 }
-                if (args.previousData.IsOptCost != args.data.IsOptCost) {
+                 ///////////////////////////////////////////////////////////////////////////////
+                if (args.previousData.IsOptCost != args.data.IsOptCost) {   // Оптовая changed
                     if (args.data.IsOptCost == true) {
                         args.data.MySaleCost = args.data.OptCost;
+                        args.data.SaleCostTG = kurss * args.data.MySaleCost;
                     }
                     else {
                         args.data.MySaleCost = args.data.SaleCost;
+                        args.data.SaleCostTG = kurss * args.data.MySaleCost;
                     }
                 }
+
                
+
+                args.data.OptCost2 = kurss * args.data.VolumeTotal * args.data.OptCost;
+
                 grid.updateRow(args.rowIndex, args.data);
-                
+                grid.refresh();
                 SetTotalValue();
+               
             }
         }
 
@@ -365,9 +396,14 @@
                             for (var i = 0; i < grid.dataSource.length; i++) {
                                 var dsource = grid.dataSource[i];
                                 if (dsource.ProductId == data.ProductId) {
+                                    if (dsource.RemainFloat < ((dsource.Amount + data.Amount) * dsource.Volume)) {
+                                        toastObj.show({ title: 'Информация!', content: "Количество не может быть больше остатка", cssClass: 'e-toast-info', icon: 'e-info toast-icons' });
+                                        return;
+                                    }
                                     dsource.Amount += data.Amount;
                                     dsource.Volume = data.Amount;
                                     dsource.VolumeTotal = dsource.Amount * data.Volume;
+                                    dsource.Summa = dsource.VolumeTotal * dsource.SaleCostTG;
                                     grid.updateRow(i, dsource);
                                     flag = true;
                                     break;
@@ -375,6 +411,13 @@
                             }
                         if (flag == false) {
                             data.SaleCostTG = kurss * data.SaleCost;
+                            data.Comments = "";
+                            if (data.Volume > data.RemainFloat) {
+                                data.VolumeTotal = data.RemainFloat;
+                                data.Amount = data.VolumeTotal / data.Volume;
+                            }
+                            data.OptCost2 = kurss * data.VolumeTotal * data.OptCost;
+                            data.Summa = data.VolumeTotal * data.SaleCostTG;
                             grid.addRecord(data);
                         }
                         document.getElementById("ProductCode").ej2_instances[0].value = null;

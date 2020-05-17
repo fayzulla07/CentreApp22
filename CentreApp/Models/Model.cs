@@ -208,6 +208,12 @@ namespace CentreApp.Models
         public string Comments { get; set; } // nvarchar(300)
         public bool IsBank { get; set; } // nvarchar(300)
         public string UserName { get; set; } // nvarchar(300)
+        public double Kurs { get; set; } // nvarchar(300)
+        public double AmountShtuk { get; set; } // nvarchar(300)
+        public double TotalCost { get; set; } // nvarchar(300)
+        public double TotalCostTG { get; set; } // nvarchar(300)
+
+
     }
     public class ReturnView
     {
@@ -231,7 +237,17 @@ namespace CentreApp.Models
         public DateTime RegDt { get; set; } // datetime
         public double ReturnCost { get; set; } // nvarchar(200)
     }
+    public class AvProfit
+    {
+        public double TotalIncome { get; set; } 
+        public double TotalSale { get; set; } 
+        public double TotalOpt { get; set; }
 
+        public double TotalIncomeTG { get; set; }
+        public double TotalSaleTG { get; set; }
+        public double TotalOptTG { get; set; }
+
+    }
     //tempdata
     public class ProductIncomeCostModel
     {
